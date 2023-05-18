@@ -1,0 +1,73 @@
+﻿@model TMelix.Models.Serie
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Serie</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Titulo" class="control-label"></label>
+                <input asp-for="Titulo" class="form-control" />
+                <span asp-validation-for="Titulo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Imagem" class="control-label"></label>
+                <input asp-for="Imagem" class="form-control" />
+                <span asp-validation-for="Imagem" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sinopse" class="control-label"></label>
+                <input asp-for="Sinopse" class="form-control" />
+                <span asp-validation-for="Sinopse" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataLancamento" class="control-label"></label>
+                <input asp-for="DataLancamento" class="form-control" />
+                <span asp-validation-for="DataLancamento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Classificacao" class="control-label"></label>
+                <input asp-for="Classificacao" class="form-control" />
+                <span asp-validation-for="Classificacao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Elenco" class="control-label"></label>
+                <input asp-for="Elenco" class="form-control" />
+                <span asp-validation-for="Elenco" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Genero" class="control-label"></label>
+                <input asp-for="Genero" class="form-control" />
+                <span asp-validation-for="Genero" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Temporada" class="control-label"></label>
+                <input asp-for="Temporada" class="form-control" />
+                <span asp-validation-for="Temporada" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Episodio" class="control-label"></label>
+                <input asp-for="Episodio" class="form-control" />
+                <span asp-validation-for="Episodio" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
