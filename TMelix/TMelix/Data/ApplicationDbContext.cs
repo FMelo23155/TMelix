@@ -10,9 +10,9 @@ namespace TMelix.Data
             : base(options)
         {
         }
-        public DbSet<TMelix.Models.Filme>? Filme { get; set; }
-        public DbSet<TMelix.Models.Serie>? Serie { get; set; }
-        public DbSet<TMelix.Models.Subscricao>? Subscricao { get; set; }
-        public DbSet<TMelix.Models.Utilizador>? Utilizador { get; set; }
+        public DbSet<Filme>? Filmes { get; set; }
+        public DbSet<Serie>? Series { get; set; }
+        public DbSet<Subscricao>? Subscricoes { get; set; }
+        public DbSet<Utilizador>? Utilizadores { get; set; }
     }
 }

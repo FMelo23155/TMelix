@@ -22,20 +22,20 @@ namespace TMelix.Controllers
         // GET: Series
         public async Task<IActionResult> Index()
         {
-              return _context.Serie != null ? 
-                          View(await _context.Serie.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Serie'  is null.");
+              return _context.Series != null ? 
+                          View(await _context.Series.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.Series'  is null.");
         }
 
         // GET: Series/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Serie == null)
+            if (id == null || _context.Series == null)
             {
                 return NotFound();
             }
 
-            var serie = await _context.Serie
+            var serie = await _context.Series
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (serie == null)
             {
@@ -70,12 +70,12 @@ namespace TMelix.Controllers
         // GET: Series/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Serie == null)
+            if (id == null || _context.Series == null)
             {
                 return NotFound();
             }
 
-            var serie = await _context.Serie.FindAsync(id);
+            var serie = await _context.Series.FindAsync(id);
             if (serie == null)
             {
                 return NotFound();
@@ -121,12 +121,12 @@ namespace TMelix.Controllers
         // GET: Series/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Serie == null)
+            if (id == null || _context.Series == null)
             {
                 return NotFound();
             }
 
-            var serie = await _context.Serie
+            var serie = await _context.Series
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (serie == null)
             {
@@ -141,14 +141,14 @@ namespace TMelix.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Serie == null)
+            if (_context.Series == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Serie'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Series'  is null.");
             }
-            var serie = await _context.Serie.FindAsync(id);
+            var serie = await _context.Series.FindAsync(id);
             if (serie != null)
             {
-                _context.Serie.Remove(serie);
+                _context.Series.Remove(serie);
             }
             
             await _context.SaveChangesAsync();
@@ -157,7 +157,7 @@ namespace TMelix.Controllers
 
         private bool SerieExists(int id)
         {
-          return (_context.Serie?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Series?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

@@ -22,20 +22,20 @@ namespace TMelix.Controllers
         // GET: Utilizadores
         public async Task<IActionResult> Index()
         {
-              return _context.Utilizador != null ? 
-                          View(await _context.Utilizador.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Utilizador'  is null.");
+              return _context.Utilizadores != null ? 
+                          View(await _context.Utilizadores.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.Utilizadores'  is null.");
         }
 
         // GET: Utilizadores/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Utilizador == null)
+            if (id == null || _context.Utilizadores == null)
             {
                 return NotFound();
             }
 
-            var utilizador = await _context.Utilizador
+            var utilizador = await _context.Utilizadores
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (utilizador == null)
             {
@@ -70,12 +70,12 @@ namespace TMelix.Controllers
         // GET: Utilizadores/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Utilizador == null)
+            if (id == null || _context.Utilizadores == null)
             {
                 return NotFound();
             }
 
-            var utilizador = await _context.Utilizador.FindAsync(id);
+            var utilizador = await _context.Utilizadores.FindAsync(id);
             if (utilizador == null)
             {
                 return NotFound();
@@ -121,12 +121,12 @@ namespace TMelix.Controllers
         // GET: Utilizadores/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Utilizador == null)
+            if (id == null || _context.Utilizadores == null)
             {
                 return NotFound();
             }
 
-            var utilizador = await _context.Utilizador
+            var utilizador = await _context.Utilizadores
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (utilizador == null)
             {
@@ -141,14 +141,14 @@ namespace TMelix.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Utilizador == null)
+            if (_context.Utilizadores == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Utilizador'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Utilizadores'  is null.");
             }
-            var utilizador = await _context.Utilizador.FindAsync(id);
+            var utilizador = await _context.Utilizadores.FindAsync(id);
             if (utilizador != null)
             {
-                _context.Utilizador.Remove(utilizador);
+                _context.Utilizadores.Remove(utilizador);
             }
             
             await _context.SaveChangesAsync();
@@ -157,7 +157,7 @@ namespace TMelix.Controllers
 
         private bool UtilizadorExists(int id)
         {
-          return (_context.Utilizador?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Utilizadores?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
