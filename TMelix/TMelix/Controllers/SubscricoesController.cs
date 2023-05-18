@@ -22,19 +22,19 @@ namespace TMelix.Controllers
         // GET: Subscricoes
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Subscricao.Include(s => s.Utilizador);
+            var applicationDbContext = _context.Subscricoes.Include(s => s.Utilizador);
             return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Subscricoes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Subscricao == null)
+            if (id == null || _context.Subscricoes == null)
             {
                 return NotFound();
             }
 
-            var subscricao = await _context.Subscricao
+            var subscricao = await _context.Subscricoes
                 .Include(s => s.Utilizador)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (subscricao == null)
@@ -48,7 +48,7 @@ namespace TMelix.Controllers
         // GET: Subscricoes/Create
         public IActionResult Create()
         {
-            ViewData["UtilizadorFK"] = new SelectList(_context.Set<Utilizador>(), "Id", "CodPostal");
+            ViewData["UtilizadorFK"] = new SelectList(_context.Set<Utilizador>(), "Id", "Nome");
             return View();
         }
 
@@ -65,24 +65,24 @@ namespace TMelix.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UtilizadorFK"] = new SelectList(_context.Set<Utilizador>(), "Id", "CodPostal", subscricao.UtilizadorFK);
+            ViewData["UtilizadorFK"] = new SelectList(_context.Set<Utilizador>(), "Id", "Nome", subscricao.UtilizadorFK);
             return View(subscricao);
         }
 
         // GET: Subscricoes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Subscricao == null)
+            if (id == null || _context.Subscricoes == null)
             {
                 return NotFound();
             }
 
-            var subscricao = await _context.Subscricao.FindAsync(id);
+            var subscricao = await _context.Subscricoes.FindAsync(id);
             if (subscricao == null)
             {
                 return NotFound();
             }
-            ViewData["UtilizadorFK"] = new SelectList(_context.Set<Utilizador>(), "Id", "CodPostal", subscricao.UtilizadorFK);
+            ViewData["UtilizadorFK"] = new SelectList(_context.Set<Utilizador>(), "Id", "Nome", subscricao.UtilizadorFK);
             return View(subscricao);
         }
 
@@ -118,19 +118,19 @@ namespace TMelix.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UtilizadorFK"] = new SelectList(_context.Set<Utilizador>(), "Id", "CodPostal", subscricao.UtilizadorFK);
+            ViewData["UtilizadorFK"] = new SelectList(_context.Set<Utilizador>(), "Id", "Nome", subscricao.UtilizadorFK);
             return View(subscricao);
         }
 
         // GET: Subscricoes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Subscricao == null)
+            if (id == null || _context.Subscricoes == null)
             {
                 return NotFound();
             }
 
-            var subscricao = await _context.Subscricao
+            var subscricao = await _context.Subscricoes
                 .Include(s => s.Utilizador)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (subscricao == null)
@@ -146,14 +146,14 @@ namespace TMelix.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Subscricao == null)
+            if (_context.Subscricoes == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Subscricao'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Subscricoes'  is null.");
             }
-            var subscricao = await _context.Subscricao.FindAsync(id);
+            var subscricao = await _context.Subscricoes.FindAsync(id);
             if (subscricao != null)
             {
-                _context.Subscricao.Remove(subscricao);
+                _context.Subscricoes.Remove(subscricao);
             }
             
             await _context.SaveChangesAsync();
@@ -162,7 +162,7 @@ namespace TMelix.Controllers
 
         private bool SubscricaoExists(int id)
         {
-          return (_context.Subscricao?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Subscricoes?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

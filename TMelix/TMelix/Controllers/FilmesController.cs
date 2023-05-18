@@ -22,20 +22,20 @@ namespace TMelix.Controllers
         // GET: Filmes
         public async Task<IActionResult> Index()
         {
-              return _context.Filme != null ? 
-                          View(await _context.Filme.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Filme'  is null.");
+              return _context.Filmes != null ? 
+                          View(await _context.Filmes.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.Filmes'  is null.");
         }
 
         // GET: Filmes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Filme == null)
+            if (id == null || _context.Filmes == null)
             {
                 return NotFound();
             }
 
-            var filme = await _context.Filme
+            var filme = await _context.Filmes
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (filme == null)
             {
@@ -70,12 +70,12 @@ namespace TMelix.Controllers
         // GET: Filmes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Filme == null)
+            if (id == null || _context.Filmes == null)
             {
                 return NotFound();
             }
 
-            var filme = await _context.Filme.FindAsync(id);
+            var filme = await _context.Filmes.FindAsync(id);
             if (filme == null)
             {
                 return NotFound();
@@ -121,12 +121,12 @@ namespace TMelix.Controllers
         // GET: Filmes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Filme == null)
+            if (id == null || _context.Filmes == null)
             {
                 return NotFound();
             }
 
-            var filme = await _context.Filme
+            var filme = await _context.Filmes
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (filme == null)
             {
@@ -141,14 +141,14 @@ namespace TMelix.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Filme == null)
+            if (_context.Filmes == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Filme'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Filmes'  is null.");
             }
-            var filme = await _context.Filme.FindAsync(id);
+            var filme = await _context.Filmes.FindAsync(id);
             if (filme != null)
             {
-                _context.Filme.Remove(filme);
+                _context.Filmes.Remove(filme);
             }
             
             await _context.SaveChangesAsync();
@@ -157,7 +157,7 @@ namespace TMelix.Controllers
 
         private bool FilmeExists(int id)
         {
-          return (_context.Filme?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Filmes?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
