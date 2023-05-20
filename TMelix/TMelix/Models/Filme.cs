@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TMelix.Data;
 
 namespace TMelix.Models
 {
@@ -83,4 +84,5 @@ namespace TMelix.Models
 
 
     }
+
 }
