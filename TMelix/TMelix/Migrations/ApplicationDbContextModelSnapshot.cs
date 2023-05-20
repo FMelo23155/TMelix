@@ -67,14 +67,14 @@ namespace TMelix.Migrations
                         new
                         {
                             Id = "a",
-                            ConcurrencyStamp = "313ac49d-fb19-4914-b53f-6fea3a969661",
+                            ConcurrencyStamp = "82833d4a-ea21-4db7-bab3-8fb42e3bdb52",
                             Name = "Administrador",
                             NormalizedName = "ADMINISTRADOR"
                         },
                         new
                         {
                             Id = "c",
-                            ConcurrencyStamp = "fc4701a9-f0d2-46a1-bba2-d89d3036bdfa",
+                            ConcurrencyStamp = "04bc6cde-0691-4444-bcde-43cf27809835",
                             Name = "Cliente",
                             NormalizedName = "CLIENTE"
                         });
