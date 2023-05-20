@@ -14,5 +14,177 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Jost', sans-serif;
+    background-color: #000000;
+    background-image: linear-gradient(147deg, #000000 0%, #434343 74%);
+}
+
+
+.form-n {
+    height: 40px;
+    margin-bottom: 10px;
+    width: 200px;
+    padding: 0px 0px 0px 0px;
+}
+
+.control-label {
+    padding-bottom: 5px;
+}
+
+
+.col-md-4 {
+    display: block;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+
+.button-34 {
+    background: #E65728;
+    border-radius: 999px;
+    box-shadow: #cc7000 0 10px 20px -10px;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-family: Inter,Helvetica,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Noto Color Emoji","Segoe UI Symbol","Android Emoji",EmojiSymbols,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans",sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    opacity: 1;
+    outline: 0 solid transparent;
+    padding: 8px 18px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: fit-content;
+    word-break: break-word;
+    border: 0;
+    display: block;
+    margin: auto;
+}
+
+.bt {
+    display: block;
+}
+
+.regLabel {
+    width: auto !important;
+    color: white;
+    display: block !important;
+}
+
+.row {
+    margin-left: 0px !important;
+}
+
+
+.inicio {
+    height: 300px;
+    margin: auto;
+    display: block;
+}
+
+img {
+    display: block;
+    margin: auto;
+    margin-bottom: 8px;
+}
+
+h1, h2, h3, h4 {
+    color: #ffffff;
+    text-align: center;
+}
+
+.checkbox {
+    color: #ffffff;
+}
+
+td, th {
+    color: #ffffff;
+}
+
+.form-group, .col-sm-2, .col-sm-10 {
+    color: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.columns {
+    float: left;
+    width: 33.3%;
+    padding: 8px;
+}
+
+.price {
+    list-style-type: none;
+    border: 1px solid #eee;
+    margin: 0;
+    padding: 0;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+}
+
+
+    .price .header {
+        background-color: #111;
+        color: white;
+        font-size: 25px;
+    }
+
+    .price li {
+        border-bottom: 1px solid #eee;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .price .grey {
+        background-color: #eee;
+        font-size: 20px;
+    }
+
+    .price .descr {
+        background-color: #6610f2;
+        font-size: 20px;
+        color: #ffffff;
+    }
+
+
+p {
+    text-align: center;
+}
+
+.sobre {
+    color: #ffffff;
+}
+
+li {
+    color: #ffffff;
+}
+
+.ckeckFilmes, .ckeckSeries {
+    display: none;
+}
+
+.btn-info {
+    color: #ffffff;
+    background-color: #5E5DF0;
+    border-color: #5E5DF0;
+}
+
+    .btn-info:is(:hover) {
+        color: #ffffff;
+        background-color: #5E5Dc0;
+        border-color: #5E5DF0;
+    }
+
+.logo {
+    width: 40%;
+    height: 100%;
 }

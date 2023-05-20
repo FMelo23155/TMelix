@@ -1,7 +1,70 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿﻿@using Microsoft.AspNetCore.Identity;
+@using TMelix.Data;
+
+@{
+    ViewData["Title"] = "Página Inicial";
 }
 
+@inject SignInManager<ApplicationUser> _signInManager
+@inject UserManager<ApplicationUser> _userManager
+
+
+<div class="inicio">
+    @if (_signInManager.IsSignedIn(User) && User.IsInRole("Administrador"))
+    {
+        // if we are here, this means that the user is authenticated
+        // read the user's data
+        var userData = await _userManager.GetUserAsync(User);
+        var userRoles = await _userManager.GetRolesAsync(userData);
+
+        <form class="bt">
+            <br />
+            <button class="button-34" role="button" asp-area="" asp-controller="Utilizadores" asp-action="Index">Utilizadores</button>
+            <br />
+            <button class="button-34" role="button" asp-area="" asp-controller="Subscricoes" asp-action="Index">Subscrição</button>
+            <br />
+            <button class="button-34" role="button" asp-area="" asp-controller="Filmes" asp-action="Index">Filmes</button>
+            <br />
+            <button class="button-34" role="button" asp-area="" asp-controller="Series" asp-action="Index">Séries</button>
+        </form>
 
     }
+    else if (_signInManager.IsSignedIn(User) && User.IsInRole("Cliente"))
+    {
+
+        // if we are here, this means that the user is authenticated
+        // read the user's data
+        var userData = await _userManager.GetUserAsync(User);
+        var userRoles = await _userManager.GetRolesAsync(userData);
+
+        <form class="bt">
+            <br />
+            <button class="button-34" role="button" asp-area="" asp-controller="Subscricoes" asp-action="Index">Subscrição</button>
+        </form>
+
+    }
+
+
+
+    else if (_signInManager.IsSignedIn(User) && (User.IsInRole("Subscritor")))
+    {
+
+        <form class="bt">
+            <br />
+            <button class="button-34" role="button" asp-area="" asp-controller="Filmes" asp-action="Index">Filmes</button>
+            <br />
+            <button class="button-34" role="button" asp-area="" asp-controller="Series" asp-action="Index">Séries</button>
+        </form>
+
+    }
+    else
+    {
+        <img class="logo" alt="Logotipo" src="~/Fotos/logo-no-background.png" />
+        <form class="bt">
+            <br />
+            <button class="button-34" role="button" asp-area="Identity" asp-page="/Account/Register">Registo</button>
+            <br />
+            <button class="button-34" role="button" asp-area="Identity" asp-page="/Account/Login">Login</button>
+        </form>
+            }
 </div>
