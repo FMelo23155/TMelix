@@ -12,8 +12,8 @@ using TMelix.Data;
 namespace TMelix.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230520131149_roles")]
-    partial class roles
+    [Migration("20230520145105_InitMelo")]
+    partial class InitMelo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -69,14 +69,14 @@ namespace TMelix.Migrations
                         new
                         {
                             Id = "a",
-                            ConcurrencyStamp = "8f0b6dc3-062b-4d05-96bc-fbf6dd1365ac",
+                            ConcurrencyStamp = "82833d4a-ea21-4db7-bab3-8fb42e3bdb52",
                             Name = "Administrador",
                             NormalizedName = "ADMINISTRADOR"
                         },
                         new
                         {
                             Id = "c",
-                            ConcurrencyStamp = "40f90d83-35c9-45b7-9bc7-a986e8de6d23",
+                            ConcurrencyStamp = "04bc6cde-0691-4444-bcde-43cf27809835",
                             Name = "Cliente",
                             NormalizedName = "CLIENTE"
                         });

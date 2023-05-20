@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TMelix.Migrations
 {
-    public partial class inicio : Migration
+    public partial class InitMelo : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -289,6 +289,16 @@ namespace TMelix.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "a", "82833d4a-ea21-4db7-bab3-8fb42e3bdb52", "Administrador", "ADMINISTRADOR" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "c", "04bc6cde-0691-4444-bcde-43cf27809835", "Cliente", "CLIENTE" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
