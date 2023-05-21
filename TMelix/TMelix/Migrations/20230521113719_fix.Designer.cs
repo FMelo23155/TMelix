@@ -12,8 +12,8 @@ using TMelix.Data;
 namespace TMelix.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230520145105_InitMelo")]
-    partial class InitMelo
+    [Migration("20230521113719_fix")]
+    partial class fix
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -69,14 +69,14 @@ namespace TMelix.Migrations
                         new
                         {
                             Id = "a",
-                            ConcurrencyStamp = "82833d4a-ea21-4db7-bab3-8fb42e3bdb52",
+                            ConcurrencyStamp = "d8e8119b-6e25-49b3-ae83-24b2e4cadcdb",
                             Name = "Administrador",
                             NormalizedName = "ADMINISTRADOR"
                         },
                         new
                         {
                             Id = "c",
-                            ConcurrencyStamp = "04bc6cde-0691-4444-bcde-43cf27809835",
+                            ConcurrencyStamp = "2a1caf17-1e22-4f8a-9ad4-494e6613acd4",
                             Name = "Cliente",
                             NormalizedName = "CLIENTE"
                         });
@@ -316,7 +316,7 @@ namespace TMelix.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("Título")
+                    b.Property<string>("Titulo")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -392,8 +392,8 @@ namespace TMelix.Migrations
                     b.Property<int>("Duracao")
                         .HasColumnType("int");
 
-                    b.Property<int>("Preço")
-                        .HasColumnType("int");
+                    b.Property<float>("Preco")
+                        .HasColumnType("real");
 
                     b.Property<int>("UtilizadorFK")
                         .HasColumnType("int");

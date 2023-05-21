@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TMelix.Migrations
 {
-    public partial class InitMelo : Migration
+    public partial class fix : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -57,7 +57,7 @@ namespace TMelix.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Título = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Titulo = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Imagem = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Sinopse = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     DataLancamento = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -227,7 +227,7 @@ namespace TMelix.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UtilizadorFK = table.Column<int>(type: "int", nullable: false),
                     Duracao = table.Column<int>(type: "int", nullable: false),
-                    Preço = table.Column<int>(type: "int", nullable: false),
+                    Preco = table.Column<float>(type: "real", nullable: false),
                     DataInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DataFim = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -293,12 +293,12 @@ namespace TMelix.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "a", "82833d4a-ea21-4db7-bab3-8fb42e3bdb52", "Administrador", "ADMINISTRADOR" });
+                values: new object[] { "a", "d8e8119b-6e25-49b3-ae83-24b2e4cadcdb", "Administrador", "ADMINISTRADOR" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "c", "04bc6cde-0691-4444-bcde-43cf27809835", "Cliente", "CLIENTE" });
+                values: new object[] { "c", "2a1caf17-1e22-4f8a-9ad4-494e6613acd4", "Cliente", "CLIENTE" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

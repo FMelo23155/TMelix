@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,14 @@ namespace TMelix.Controllers
     public class UtilizadoresController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public UtilizadoresController(ApplicationDbContext context)
+        public UtilizadoresController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         // GET: Utilizadores
@@ -80,6 +85,18 @@ namespace TMelix.Controllers
             {
                 return NotFound();
             }
+
+            var user = await _userManager.FindByIdAsync(utilizador.UserID);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            // Compare the 'Funcao' field in the 'AspNetUsers' table with 'UserF' from 'Utilizadores'
+            if (user.Funcao != utilizador.UserF)
+            {
+                utilizador.UserF = user.Funcao;
+            }
             return View(utilizador);
         }
 
@@ -97,10 +114,62 @@ namespace TMelix.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+                try 
                 {
-                    _context.Update(utilizador);
+                    var existingUtilizador = await _context.Utilizadores.FindAsync(id);
+
+                    if (existingUtilizador == null)
+                    {
+                        return NotFound();
+                    }
+
+                    existingUtilizador.Nome = utilizador.Nome;
+                    existingUtilizador.Email = utilizador.Email;
+                    existingUtilizador.NIF = utilizador.NIF;
+                    existingUtilizador.Morada = utilizador.Morada;
+                    existingUtilizador.Pais = utilizador.Pais;
+                    existingUtilizador.CodPostal = utilizador.CodPostal;
+                    existingUtilizador.Sexo = utilizador.Sexo;
+                    existingUtilizador.DataNasc = utilizador.DataNasc;
+                    existingUtilizador.UserID = utilizador.UserID;
+                    existingUtilizador.UserF = utilizador.UserF;
+
+                    _context.Update(existingUtilizador);
                     await _context.SaveChangesAsync();
+
+                    var user = await _userManager.FindByIdAsync(existingUtilizador.UserID);
+                    if (user == null)
+                    {
+                        return NotFound();
+                    }
+
+                    // Update the 'Funcao' field in the 'AspNetUsers' table
+                    user.Funcao = existingUtilizador.UserF;
+
+                    // Update the user role based on 'UserF'
+                    var roles = await _userManager.GetRolesAsync(user);
+                    await _userManager.RemoveFromRolesAsync(user, roles.ToArray());
+
+                    if (existingUtilizador.UserF == "Cliente")
+                    {
+
+                        await _userManager.AddToRoleAsync(user, "Cliente");
+                        await _signInManager.RefreshSignInAsync(user);
+
+                    }
+                    else if (existingUtilizador.UserF == "Administrador")
+                    {
+                        await _userManager.AddToRoleAsync(user, "Administrador");
+                        await _signInManager.RefreshSignInAsync(user);
+                    }
+                    else if (existingUtilizador.UserF == "Subscritor")
+                    {
+                        await _userManager.AddToRoleAsync(user, "Subscritor");
+                        await _signInManager.RefreshSignInAsync(user);
+                    }
+                    // Add additional conditions for other values of UserF and their corresponding roles
+
+                    await _userManager.UpdateAsync(user);
                 }
                 catch (DbUpdateConcurrencyException)
                 {

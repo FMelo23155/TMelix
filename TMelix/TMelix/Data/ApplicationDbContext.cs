@@ -36,7 +36,8 @@ namespace TMelix.Data
 
             builder.Entity<IdentityRole>().HasData(
                 new IdentityRole { Id = "a", Name = "Administrador", NormalizedName = "ADMINISTRADOR" },
-                new IdentityRole { Id="c", Name="Cliente", NormalizedName="CLIENTE"}
+                new IdentityRole { Id="c", Name="Cliente", NormalizedName="CLIENTE"},
+                new IdentityRole { Id = "s", Name = "Subscritor", NormalizedName = "SUBSCRITOR" }
             );
         }
         public DbSet<Filme> Filmes { get; set; }

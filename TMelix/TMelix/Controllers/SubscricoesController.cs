@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using TMelix.Data;
 using TMelix.Models;
 
@@ -13,16 +15,32 @@ namespace TMelix.Controllers
     public class SubscricoesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public SubscricoesController(ApplicationDbContext context)
+        public SubscricoesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
+
+        private void PopulateFilmesSeries()
+        {
+            ViewBag.Filmes = _context.Filmes.ToList();
+            ViewBag.Series = _context.Series.ToList();
+        }
+
 
         // GET: Subscricoes
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Subscricoes.Include(s => s.Utilizador);
+            PopulateFilmesSeries();
+            
+            var applicationDbContext = _context.Subscricoes
+                .Include(s => s.Utilizador)
+                .Include(s => s.Filmes)
+                .Include(s => s.Series);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -36,6 +54,8 @@ namespace TMelix.Controllers
 
             var subscricao = await _context.Subscricoes
                 .Include(s => s.Utilizador)
+                .Include(s=> s.Filmes)
+                .Include(s => s.Series)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (subscricao == null)
             {
@@ -48,7 +68,12 @@ namespace TMelix.Controllers
         // GET: Subscricoes/Create
         public IActionResult Create()
         {
-            ViewData["UtilizadorFK"] = new SelectList(_context.Set<Utilizador>(), "Id", "Nome");
+            ViewData["UtilizadorFK"] = new SelectList(_context.Utilizadores, "Id", "Nome");
+
+
+            PopulateFilmesSeries();
+
+
             return View();
         }
 
@@ -57,16 +82,83 @@ namespace TMelix.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UtilizadorFK,Duracao,Preço,DataInicio,DataFim")] Subscricao subscricao)
+        public async Task<IActionResult> Create([Bind("Id,UtilizadorFK,Duracao,Preco,DataInicio,DataFim")] Subscricao subscricao)
         {
-            if (ModelState.IsValid)
+            
+            subscricao.DataInicio = DateTime.Now;
+
+
+
+            string aux = Request.Form["Preco"];
+            
+            float preco = float.Parse(aux);
+            subscricao.Preco = preco;
+
+            if (subscricao.Preco < 12)
             {
-                _context.Add(subscricao);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                subscricao.DataFim = subscricao.DataInicio.AddMonths(1);
+                subscricao.Duracao = 1;
             }
-            ViewData["UtilizadorFK"] = new SelectList(_context.Set<Utilizador>(), "Id", "Nome", subscricao.UtilizadorFK);
-            return View(subscricao);
+            else if(subscricao.Preco < 45 && subscricao.Preco > 13)
+            {
+                subscricao.DataFim = subscricao.DataInicio.AddMonths(6);
+                subscricao.Duracao= 6;
+            }
+            else
+            {
+                subscricao.DataFim = subscricao.DataInicio.AddMonths(12);
+                subscricao.Duracao = 12;
+            }
+
+            string lstTags = Request.Form["checkFilmes"];
+            string lstTags1 = Request.Form["checkSeries"];
+
+
+            if (!string.IsNullOrEmpty(lstTags))
+            {
+                int[] splTags = lstTags.Split(',').Select(Int32.Parse).ToArray();
+
+                if (splTags.Count() > 0)
+                {
+                    var PostTags = _context.Filmes.Where(w => splTags.Contains(w.Id)).ToList();
+
+                    subscricao.Filmes.AddRange(PostTags);
+                }
+            }
+
+            if (!string.IsNullOrEmpty(lstTags1))
+            {
+                int[] splTags1 = lstTags1.Split(',').Select(Int32.Parse).ToArray();
+
+                if (splTags1.Count() > 0)
+                {
+                    var PostTags1 = _context.Series.Where(w => splTags1.Contains(w.Id)).ToList();
+
+                    subscricao.Series.AddRange(PostTags1);
+                }
+            }
+
+            await AlterarRole();
+
+
+            try
+                {
+                    _context.Add(subscricao);
+                    await _context.SaveChangesAsync();
+
+                    
+                    // Call AlterarRole method to update user role
+                    
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception)
+                {
+                    // Handle exceptions appropriately
+                    return View(subscricao);
+                }
+            
+
         }
 
         // GET: Subscricoes/Edit/5
@@ -76,6 +168,8 @@ namespace TMelix.Controllers
             {
                 return NotFound();
             }
+
+            PopulateFilmesSeries();
 
             var subscricao = await _context.Subscricoes.FindAsync(id);
             if (subscricao == null)
@@ -91,11 +185,57 @@ namespace TMelix.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UtilizadorFK,Duracao,Preço,DataInicio,DataFim")] Subscricao subscricao)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UtilizadorFK,Duracao,Preco,DataInicio,DataFim")] Subscricao subscricao)
         {
             if (id != subscricao.Id)
             {
                 return NotFound();
+            }
+
+            subscricao.DataInicio = DateTime.Now;
+
+            if (subscricao.Preco < 12)
+            {
+                subscricao.DataFim = subscricao.DataInicio.AddMonths(1);
+                subscricao.Duracao = 1;
+            }
+            else if (subscricao.Preco < 45 && subscricao.Preco > 13)
+            {
+                subscricao.DataFim = subscricao.DataInicio.AddMonths(6);
+                subscricao.Duracao = 6;
+            }
+            else
+            {
+                subscricao.DataFim = subscricao.DataInicio.AddMonths(12);
+                subscricao.Duracao = 12;
+            }
+
+            string lstTags = Request.Form["checkFilmes"];
+            string lstTags1 = Request.Form["checkSeries"];
+
+
+            if (!string.IsNullOrEmpty(lstTags))
+            {
+                int[] splTags = lstTags.Split(',').Select(Int32.Parse).ToArray();
+
+                if (splTags.Count() > 0)
+                {
+                    var PostTags = _context.Filmes.Where(w => splTags.Contains(w.Id)).ToList();
+
+                    subscricao.Filmes.AddRange(PostTags);
+                }
+            }
+
+            if (!string.IsNullOrEmpty(lstTags1))
+            {
+                int[] splTags1 = lstTags1.Split(',').Select(Int32.Parse).ToArray();
+
+                if (splTags1.Count() > 0)
+                {
+                    var PostTags1 = _context.Series.Where(w => splTags1.Contains(w.Id)).ToList();
+
+                    subscricao.Series.AddRange(PostTags1);
+                }
             }
 
             if (ModelState.IsValid)
@@ -132,6 +272,8 @@ namespace TMelix.Controllers
 
             var subscricao = await _context.Subscricoes
                 .Include(s => s.Utilizador)
+                .Include(s => s.Filmes)
+                .Include(s => s.Series)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (subscricao == null)
             {
@@ -163,6 +305,17 @@ namespace TMelix.Controllers
         private bool SubscricaoExists(int id)
         {
           return (_context.Subscricoes?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        public async Task<IActionResult> AlterarRole()
+        {
+            var userData = await _userManager.GetUserAsync(User);
+            await _userManager.RemoveFromRoleAsync(userData, "Cliente");
+            userData.Funcao = "Susbcritor";
+            await _userManager.UpdateAsync(userData);
+            await _userManager.AddToRoleAsync(userData, "Subscritor");
+            await _signInManager.RefreshSignInAsync(userData);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

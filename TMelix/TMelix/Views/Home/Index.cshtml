@@ -10,13 +10,16 @@
 
 
 <div class="inicio">
+
+ 
+
     @if (_signInManager.IsSignedIn(User) && User.IsInRole("Administrador"))
     {
         // if we are here, this means that the user is authenticated
         // read the user's data
+
         var userData = await _userManager.GetUserAsync(User);
         var userRoles = await _userManager.GetRolesAsync(userData);
-
         <form class="bt">
             <br />
             <button class="button-34" role="button" asp-area="" asp-controller="Utilizadores" asp-action="Index">Utilizadores</button>
@@ -34,8 +37,9 @@
 
         // if we are here, this means that the user is authenticated
         // read the user's data
-        var userData = await _userManager.GetUserAsync(User);
+         var userData = await _userManager.GetUserAsync(User);
         var userRoles = await _userManager.GetRolesAsync(userData);
+        Console.WriteLine("algo");
 
         <form class="bt">
             <br />
@@ -49,6 +53,10 @@
     else if (_signInManager.IsSignedIn(User) && (User.IsInRole("Subscritor")))
     {
 
+        var userData = await _userManager.GetUserAsync(User);
+        var userRoles = await _userManager.GetRolesAsync(userData);
+        Console.WriteLine("");
+
         <form class="bt">
             <br />
             <button class="button-34" role="button" asp-area="" asp-controller="Filmes" asp-action="Index">Filmes</button>
@@ -59,6 +67,7 @@
     }
     else
     {
+
         <img class="logo" alt="Logotipo" src="~/Fotos/logo-no-background.png" />
         <form class="bt">
             <br />

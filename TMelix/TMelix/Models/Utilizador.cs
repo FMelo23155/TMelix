@@ -1,5 +1,7 @@
-﻿using Microsoft.Build.Framework;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Build.Framework;
 using System.ComponentModel.DataAnnotations;
+using TMelix.Data;
 using RequiredAttribute = System.ComponentModel.DataAnnotations.RequiredAttribute;
 
 namespace TMelix.Models

@@ -80,6 +80,8 @@ namespace TMelix.Controllers
             {
                 return NotFound();
             }
+
+            HttpContext.Session.SetInt32("serieD", serie.Id);
             return View(serie);
         }
 
@@ -93,6 +95,20 @@ namespace TMelix.Controllers
             if (id != serie.Id)
             {
                 return NotFound();
+            }
+
+            var serieIdGuardado = HttpContext.Session.GetInt32("serieD");
+
+            if(serieIdGuardado == null)
+            {
+                ModelState.AddModelError("", "Gastou mais tempo que o esperado...");
+                return View(serie);
+            }
+
+            if(serieIdGuardado != serie.Id)
+            {
+                ModelState.AddModelError("", "Algo deu errado");
+                return View(serie);
             }
 
             if (ModelState.IsValid)
