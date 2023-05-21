@@ -28,7 +28,7 @@ namespace TMelix.Models
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
         [StringLength(100, ErrorMessage ="O {0} não pode ter mais do que {1} caractéres.")]
         [Display(Name = "Título")]
-        public string Título { get; set; }
+        public string Titulo { get; set; }
 
         /// <summary>
         /// Imagem do filme

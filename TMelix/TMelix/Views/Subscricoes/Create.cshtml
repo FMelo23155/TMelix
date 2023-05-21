@@ -2,49 +2,95 @@
 
 @{
     ViewData["Title"] = "Create";
+
 }
 
-<h1>Create</h1>
 
-<h4>Subscricao</h4>
+
+
+<script src="/lib/jquery/dist/jquery.min.js" type="text/javascript"></script>
+
+@*script para criar uma lista com os filmes e séries que vão sendo escolhidos para determinada subscrição
+*@
+<script>
+    $(document).ready(function (){
+        $("#btnAddFilme").click(function (){
+
+            $("#listaFilmes").append("<li>" + $("#Filmes option:selected").text() + "<input type='checkbox' name='checkFilmes' id='checkFilmes' class='checkFilmes' checked='checked' value='" + $("#Filmes option:selected").val() + "'></li>");
+        });
+    });
+
+    $(document).ready(function (){
+        $("#btnAddSerie").click(function (){
+
+            $("#listaSeries").append("<li>" + $("#Series option:selected").text() + "<input type='checkbox' name='checkSeries' id='checkSeries' class='checkSeries' checked='checked' value='" + $("#Series option:selected").val() + "'></li>");
+        });
+    });
+
+</script>
+
+<h1>Criar</h1>
+
+<h4>Subscrição</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="UtilizadorFK" class="control-label"></label>
-                <select asp-for="UtilizadorFK" class ="form-control" asp-items="ViewBag.UtilizadorFK"></select>
+                <label asp-for="UtilizadorFK" class="control-label">Utilizador</label>
+                <select asp-for="UtilizadorFK" class ="form-control" asp-items="ViewBag.UtilizadorFK">
+                    <option value="">Escolha um Utilizador</option>
+                </select>
             </div>
             <div class="form-group">
-                <label asp-for="Duracao" class="control-label"></label>
-                <input asp-for="Duracao" class="form-control" />
-                <span asp-validation-for="Duracao" class="text-danger"></span>
+                <label asp-for="Preco" class="control-label"></label>
+                <select id="Preco" name="Preco" asp-for="Preco" class="form-control">
+                    <option value="">Escolha uma opção</option>
+                    <option value="10.99">10,99 por 1 mês</option>
+                    <option value="39.99">39,99 por 6 meses</option>
+                    <option value="69.99">69,99 por 12 meses</option>
+                </select>
+                
             </div>
             <div class="form-group">
-                <label asp-for="Preço" class="control-label"></label>
-                <input asp-for="Preço" class="form-control" />
-                <span asp-validation-for="Preço" class="text-danger"></span>
+                <a href="~/Series" class="button">Lista de séries disponíveis</a>
             </div>
             <div class="form-group">
-                <label asp-for="DataInicio" class="control-label"></label>
-                <input asp-for="DataInicio" class="form-control" />
-                <span asp-validation-for="DataInicio" class="text-danger"></span>
+                <br />
+                <label class="control-label">Série</label>
+                @Html.DropDownListFor(m=>m.Series, new SelectList(ViewBag.Series,"Id","Titulo") , new {@class= "form-control" })
+                <br />
+                <button type="button" class="btn btn-info" id="btnAddSerie">Adicionar série</button>
+            </div>
+            <div>
+                <br />
+                <ul id="listaSeries"></ul>
             </div>
             <div class="form-group">
-                <label asp-for="DataFim" class="control-label"></label>
-                <input asp-for="DataFim" class="form-control" />
-                <span asp-validation-for="DataFim" class="text-danger"></span>
+                <br />
+                <a href="~/Filmes" class="button">Lista de filmes disponíveis</a>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <br />
+                <label class="control-label">Filme</label>
+                @Html.DropDownListFor(m=>m.Filmes, new SelectList(ViewBag.Filmes,"Id","Titulo") , new {@class= "form-control" })
+                <br />
+                <button type="button" class="btn btn-info" id="btnAddFilme">Adicionar filme</button>
+            </div>
+            <div>
+                <br />
+                <ul id="listaFilmes"></ul>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Criar" class="button-34" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Voltar à lista</a>
 </div>
 
 @section Scripts {

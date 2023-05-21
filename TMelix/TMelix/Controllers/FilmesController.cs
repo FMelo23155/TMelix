@@ -14,9 +14,12 @@ namespace TMelix.Controllers
     {
         private readonly ApplicationDbContext _context;
 
+ 
+
         public FilmesController(ApplicationDbContext context)
         {
             _context = context;
+         
         }
 
         // GET: Filmes
@@ -56,7 +59,7 @@ namespace TMelix.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Título,Imagem,Sinopse,DataLancamento,Classificacao,Elenco,Genero")] Filme filme)
+        public async Task<IActionResult> Create([Bind("Id,Titulo,Imagem,Sinopse,DataLancamento,Classificacao,Elenco,Genero")] Filme filme)
         {
             if (ModelState.IsValid)
             {
@@ -80,6 +83,8 @@ namespace TMelix.Controllers
             {
                 return NotFound();
             }
+
+            HttpContext.Session.SetInt32("filmeD", filme.Id);
             return View(filme);
         }
 
@@ -88,11 +93,25 @@ namespace TMelix.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Título,Imagem,Sinopse,DataLancamento,Classificacao,Elenco,Genero")] Filme filme)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,Imagem,Sinopse,DataLancamento,Classificacao,Elenco,Genero")] Filme filme)
         {
             if (id != filme.Id)
             {
                 return NotFound();
+            }
+
+            var filmeIDGuardado = HttpContext.Session.GetInt32("filmeD");
+
+            if(filmeIDGuardado == null)
+            {
+                ModelState.AddModelError("", "Gastou mais tempo que o esperado...");
+                return View(filme);
+            }
+
+            if(filmeIDGuardado != filme.Id)
+            {
+                ModelState.AddModelError("", "Algo deu errado.");
+                return RedirectToAction(nameof(Index));
             }
 
             if (ModelState.IsValid)

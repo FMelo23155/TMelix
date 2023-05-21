@@ -39,7 +39,7 @@ namespace TMelix.Models
         /// Preço da subscrição
         /// </summary>
         [Display(Name ="Preço")]
-        public int Preço{ get; set; }
+        public float Preco{ get; set; }
 
         /// <summary>
         /// Data de inicio da subscrição

@@ -1,8 +1,12 @@
-﻿@model IEnumerable<TMelix.Models.Utilizador>
+﻿@using Microsoft.AspNetCore.Identity;
+@using TMelix.Data;
+@model IEnumerable<TMelix.Models.Utilizador>
 
 @{
     ViewData["Title"] = "Index";
 }
+
+@inject UserManager<ApplicationUser> userManager
 
 <h1>Index</h1>
 
@@ -47,6 +51,10 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
+
+            var user = await userManager.FindByIdAsync(item.UserID); // Access user using userManager
+            var funcao = user?.Funcao; // Access Funcao from the user
+
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Nome)
@@ -76,7 +84,7 @@
                 @Html.DisplayFor(modelItem => item.UserID)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UserF)
+                @funcao
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
