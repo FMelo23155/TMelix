@@ -1,4 +1,6 @@
-﻿@model IEnumerable<TMelix.Models.Subscricao>
+﻿@using Microsoft.AspNetCore.Identity;
+@using TMelix.Data;
+@model IEnumerable<TMelix.Models.Subscricao>
 
 @{
     ViewData["Title"] = "Index";
@@ -6,54 +8,147 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Utilizador)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Duracao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Preco)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DataInicio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DataFim)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Utilizador.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Duracao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Preco)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataInicio)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataFim)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+@inject SignInManager<ApplicationUser> _signInManager
+@inject UserManager<ApplicationUser> _userManager
+
+
+
+<h1>Lista de Subscrições</h1>
+@if (_signInManager.IsSignedIn(User) && User.IsInRole("Administrador"))
+{
+
+
+    <p>
+        <a asp-action="Create">Criar novas Subscrições</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Utilizador)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Duracao)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Preco)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DataInicio)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DataFim)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Filmes)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Series)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Utilizador.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Duracao)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Preco)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DataInicio)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DataFim)
+                    </td>
+                    <th>
+                        @foreach (var item2 in item.Filmes)
+                        {
+                            <li>@Html.DisplayFor(modelItem => item2.Titulo)</li>
+                        }
+                    </th>
+                    <th>
+                        @foreach (var item2 in item.Series)
+                        {
+                            <li>@Html.DisplayFor(modelItem => item2.Titulo)</li>
+                        }
+                    </th>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Apagar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
-    </tbody>
-</table>
+else if (_signInManager.IsSignedIn(User) && User.IsInRole("Subscritor"))
+{
+    var userId = _userManager.GetUserId(User);
+    var clienteSubscricao = Model.FirstOrDefault(s => s.Utilizador.UserID.ToString() == userId);
+
+
+    if (clienteSubscricao != null)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Utilizador)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Duracao)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Preco)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataInicio)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataFim)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Filmes)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Series)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => clienteSubscricao.Utilizador.Nome)</td>
+                    <td>@Html.DisplayFor(modelItem => clienteSubscricao.Duracao)</td>
+                    <td>@Html.DisplayFor(modelItem => clienteSubscricao.Preco)</td>
+                    <td>@Html.DisplayFor(modelItem => clienteSubscricao.DataInicio)</td>
+                    <td>@Html.DisplayFor(modelItem => clienteSubscricao.DataFim)</td>
+                    <th>
+                        @foreach (var item2 in clienteSubscricao.Filmes)
+                        {
+                            <li>@Html.DisplayFor(modelItem => item2.Titulo)</li>
+                        }
+                    </th>
+                    <th>
+                        @foreach (var item2 in clienteSubscricao.Series)
+                        {
+                            <li>@Html.DisplayFor(modelItem => item2.Titulo)</li>
+                        }
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+        }
+
+}else{
+    <p>
+        <a asp-action="Create">Criar novas Subscrições</a>
+    </p>
+}

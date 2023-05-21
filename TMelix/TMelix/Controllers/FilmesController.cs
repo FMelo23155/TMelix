@@ -84,7 +84,6 @@ namespace TMelix.Controllers
                 return NotFound();
             }
 
-            HttpContext.Session.SetInt32("filmeD", filme.Id);
             return View(filme);
         }
 
@@ -98,20 +97,6 @@ namespace TMelix.Controllers
             if (id != filme.Id)
             {
                 return NotFound();
-            }
-
-            var filmeIDGuardado = HttpContext.Session.GetInt32("filmeD");
-
-            if(filmeIDGuardado == null)
-            {
-                ModelState.AddModelError("", "Gastou mais tempo que o esperado...");
-                return View(filme);
-            }
-
-            if(filmeIDGuardado != filme.Id)
-            {
-                ModelState.AddModelError("", "Algo deu errado.");
-                return RedirectToAction(nameof(Index));
             }
 
             if (ModelState.IsValid)

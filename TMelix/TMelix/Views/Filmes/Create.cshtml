@@ -1,15 +1,31 @@
-﻿@model TMelix.Models.Filme
+﻿@using Microsoft.AspNetCore.Identity;
+@using TMelix.Data;
+@model TMelix.Models.Filme
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+@inject SignInManager<ApplicationUser> _signInManager
+@inject UserManager<ApplicationUser> _userManager
 
-<h4>Filme</h4>
-<hr />
+
+
+@if (_signInManager.IsSignedIn(User) && !User.IsInRole("Administrador"))
+{
+    <header>
+        <h1 class="text-danger">Acesso negado</h1>
+        <p class="text-danger">You do not have access to this resource.</p>
+    </header>
+}else{
+
+    <h1>Create</h1>
+
+    <h4>Filme</h4>
+    <hr />
 <div class="row">
     <div class="col-md-4">
+
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -57,7 +73,7 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
+}
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
