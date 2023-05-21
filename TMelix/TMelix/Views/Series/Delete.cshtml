@@ -1,8 +1,27 @@
-﻿@model TMelix.Models.Serie
+﻿@using Microsoft.AspNetCore.Identity;
+@using TMelix.Data;
+@model TMelix.Models.Serie
 
 @{
     ViewData["Title"] = "Delete";
 }
+
+@inject SignInManager<ApplicationUser> _signInManager
+@inject UserManager<ApplicationUser> _userManager
+
+
+
+@if (_signInManager.IsSignedIn(User) && !User.IsInRole("Administrador"))
+{
+    <header>
+        <h1 class="text-danger">Acesso negado</h1>
+        <p class="text-danger">You do not have access to this resource.</p>
+    </header>
+}
+else
+{
+
+
 
 <h1>Delete</h1>
 
@@ -73,3 +92,4 @@
         <a asp-action="Index">Back to List</a>
     </form>
 </div>
+}
