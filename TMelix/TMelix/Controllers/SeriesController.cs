@@ -22,6 +22,10 @@ namespace TMelix.Controllers
         // GET: Series
         public async Task<IActionResult> Index()
         {
+            if(User.IsInRole("Cliente")){
+                return Forbid();
+            }
+
               return _context.Series != null ? 
                           View(await _context.Series.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.Series'  is null.");
@@ -30,6 +34,12 @@ namespace TMelix.Controllers
         // GET: Series/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+
+            if (User.IsInRole("Cliente"))
+            {
+                return Forbid();
+            }
+
             if (id == null || _context.Series == null)
             {
                 return NotFound();

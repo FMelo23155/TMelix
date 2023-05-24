@@ -142,6 +142,9 @@ else if (_signInManager.IsSignedIn(User) && User.IsInRole("Subscritor"))
                             <li>@Html.DisplayFor(modelItem => item2.Titulo)</li>
                         }
                     </th>
+                    <td>
+                        <a asp-action="Delete" asp-route-id="@clienteSubscricao.Id">Apagar</a>
+                    </td>
                 </tr>
             </tbody>
         </table>

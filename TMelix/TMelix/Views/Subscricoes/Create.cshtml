@@ -1,11 +1,14 @@
-﻿@model TMelix.Models.Subscricao
+﻿@using Microsoft.AspNetCore.Identity;
+@using TMelix.Data;
+@model TMelix.Models.Subscricao
 
 @{
     ViewData["Title"] = "Create";
 
 }
 
-
+@inject SignInManager<ApplicationUser> _signInManager
+@inject UserManager<ApplicationUser> _userManager
 
 
 <script src="/lib/jquery/dist/jquery.min.js" type="text/javascript"></script>
@@ -38,10 +41,18 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="UtilizadorFK" class="control-label">Utilizador</label>
-                <select asp-for="UtilizadorFK" class ="form-control" asp-items="ViewBag.UtilizadorFK">
-                    <option value="">Escolha um Utilizador</option>
-                </select>
+                @if(_signInManager.IsSignedIn(User) && User.IsInRole("Cliente")){
+                    var userData = await _userManager.GetUserAsync(User);
+                    Console.WriteLine("");
+                    <label class="control-label">Utilizador</label>
+                    <p>@userData.Nome</p>
+                }else{
+                    <label asp-for="UtilizadorFK" class="control-label">Utilizador</label>
+                    <select asp-for="UtilizadorFK" class="form-control" asp-items="ViewBag.UtilizadorFK">
+                        <option value="">Escolha um Utilizador</option>
+                    </select>
+                }
+                
             </div>
             <div class="form-group">
                 <label asp-for="Preco" class="control-label"></label>
