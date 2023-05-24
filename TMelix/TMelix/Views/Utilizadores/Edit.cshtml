@@ -4,6 +4,7 @@
     ViewData["Title"] = "Edit";
 }
 
+
 <h1>Edit</h1>
 
 <h4>Utilizador</h4>
@@ -53,16 +54,21 @@
                 <input asp-for="DataNasc" class="form-control" />
                 <span asp-validation-for="DataNasc" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="UserID" class="control-label"></label>
-                <input asp-for="UserID" class="form-control" />
-                <span asp-validation-for="UserID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserF" class="control-label"></label>
-                <input asp-for="UserF" class="form-control" />
-                <span asp-validation-for="UserF" class="text-danger"></span>
-            </div>
+            @if (User.IsInRole("Administrador"))
+            {
+                <div class="form-group">
+                    <label asp-for="UserID" class="control-label"></label>
+                    <input asp-for="UserID" class="form-control" />
+                    <span asp-validation-for="UserID" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="UserF" class="control-label"></label>
+                    <input asp-for="UserF" class="form-control" />
+                    <span asp-validation-for="UserF" class="text-danger"></span>
+                </div>
+            }
+           
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

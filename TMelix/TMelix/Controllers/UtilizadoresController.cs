@@ -47,6 +47,15 @@ namespace TMelix.Controllers
                 return NotFound();
             }
 
+            var loggedInUserId = _userManager.GetUserId(User);
+            if (!User.IsInRole("Administrador"))
+            {
+                if (utilizador.UserID != loggedInUserId)
+                {
+                    return Forbid();
+                }
+            }
+
             return View(utilizador);
         }
 
@@ -86,6 +95,16 @@ namespace TMelix.Controllers
                 return NotFound();
             }
 
+            var loggedInUserId = _userManager.GetUserId(User);
+            if (!User.IsInRole("Administrador"))
+            {
+                if (utilizador.UserID != loggedInUserId)
+                {
+                    return Forbid();
+                }
+            }
+           
+
             var user = await _userManager.FindByIdAsync(utilizador.UserID);
             if (user == null)
             {
@@ -112,6 +131,24 @@ namespace TMelix.Controllers
                 return NotFound();
             }
 
+            if (!User.IsInRole("Administrador"))
+            {
+                ModelState.Remove("UserF");
+                ModelState.Remove("UserID");
+
+                var existingUtilizador = await _context.Utilizadores.FindAsync(id);
+
+                if (existingUtilizador == null)
+                {
+                    return NotFound();
+                }
+
+                utilizador.UserF = existingUtilizador.UserF;
+                utilizador.UserID = existingUtilizador.UserID;
+            }
+
+
+
             if (ModelState.IsValid)
             {
                 try 
@@ -134,6 +171,7 @@ namespace TMelix.Controllers
                     existingUtilizador.UserID = utilizador.UserID;
                     existingUtilizador.UserF = utilizador.UserF;
 
+
                     _context.Update(existingUtilizador);
                     await _context.SaveChangesAsync();
 
@@ -154,21 +192,19 @@ namespace TMelix.Controllers
                     {
 
                         await _userManager.AddToRoleAsync(user, "Cliente");
-                        await _signInManager.RefreshSignInAsync(user);
 
                     }
                     else if (existingUtilizador.UserF == "Administrador")
                     {
                         await _userManager.AddToRoleAsync(user, "Administrador");
-                        await _signInManager.RefreshSignInAsync(user);
                     }
                     else if (existingUtilizador.UserF == "Subscritor")
                     {
                         await _userManager.AddToRoleAsync(user, "Subscritor");
-                        await _signInManager.RefreshSignInAsync(user);
                     }
-                    // Add additional conditions for other values of UserF and their corresponding roles
 
+
+                    await _userManager.UpdateSecurityStampAsync(user);
                     await _userManager.UpdateAsync(user);
                 }
                 catch (DbUpdateConcurrencyException)
@@ -200,6 +236,15 @@ namespace TMelix.Controllers
             if (utilizador == null)
             {
                 return NotFound();
+            }
+
+            var loggedInUserId = _userManager.GetUserId(User);
+            if (!User.IsInRole("Administrador"))
+            {
+                if (utilizador.UserID != loggedInUserId)
+                {
+                    return Forbid();
+                }
             }
 
             return View(utilizador);

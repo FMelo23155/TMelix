@@ -25,7 +25,13 @@ namespace TMelix.Controllers
         // GET: Filmes
         public async Task<IActionResult> Index()
         {
-              return _context.Filmes != null ? 
+
+            if (User.IsInRole("Cliente"))
+            {
+                return Forbid();
+            }
+
+            return _context.Filmes != null ? 
                           View(await _context.Filmes.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.Filmes'  is null.");
         }
@@ -33,6 +39,12 @@ namespace TMelix.Controllers
         // GET: Filmes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (User.IsInRole("Cliente"))
+            {
+                return Forbid();
+            }
+
+
             if (id == null || _context.Filmes == null)
             {
                 return NotFound();

@@ -61,6 +61,19 @@ namespace TMelix.Controllers
             {
                 return NotFound();
             }
+            
+            var userData = await _userManager.GetUserAsync(User);
+            var utilizador = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Nome == userData.Nome);
+
+            if (!User.IsInRole("Administrador"))
+            {
+                if (subscricao.UtilizadorFK != utilizador.Id)
+                {
+                    return Forbid();
+                }
+            }
+
+            
 
             return View(subscricao);
         }
@@ -94,60 +107,115 @@ namespace TMelix.Controllers
             float preco = float.Parse(aux);
             subscricao.Preco = preco;
 
-            if (subscricao.Preco < 12)
+            if (User.IsInRole("Administrador"))
             {
-                subscricao.DataFim = subscricao.DataInicio.AddMonths(1);
-                subscricao.Duracao = 1;
-            }
-            else if(subscricao.Preco < 45 && subscricao.Preco > 13)
-            {
-                subscricao.DataFim = subscricao.DataInicio.AddMonths(6);
-                subscricao.Duracao= 6;
+                if (subscricao.Preco < 12)
+                {
+                    subscricao.DataFim = subscricao.DataInicio.AddMonths(1);
+                    subscricao.Duracao = 1;
+                }
+                else if (subscricao.Preco < 45 && subscricao.Preco > 13)
+                {
+                    subscricao.DataFim = subscricao.DataInicio.AddMonths(6);
+                    subscricao.Duracao = 6;
+                }
+                else
+                {
+                    subscricao.DataFim = subscricao.DataInicio.AddMonths(12);
+                    subscricao.Duracao = 12;
+                }
+
+                string lstTags = Request.Form["checkFilmes"];
+                string lstTags1 = Request.Form["checkSeries"];
+
+
+                if (!string.IsNullOrEmpty(lstTags))
+                {
+                    int[] splTags = lstTags.Split(',').Select(Int32.Parse).ToArray();
+
+                    if (splTags.Count() > 0)
+                    {
+                        var PostTags = _context.Filmes.Where(w => splTags.Contains(w.Id)).ToList();
+
+                        subscricao.Filmes.AddRange(PostTags);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(lstTags1))
+                {
+                    int[] splTags1 = lstTags1.Split(',').Select(Int32.Parse).ToArray();
+
+                    if (splTags1.Count() > 0)
+                    {
+                        var PostTags1 = _context.Series.Where(w => splTags1.Contains(w.Id)).ToList();
+
+                        subscricao.Series.AddRange(PostTags1);
+                    }
+                }
             }
             else
             {
-                subscricao.DataFim = subscricao.DataInicio.AddMonths(12);
-                subscricao.Duracao = 12;
-            }
 
-            string lstTags = Request.Form["checkFilmes"];
-            string lstTags1 = Request.Form["checkSeries"];
+                var userData = await _userManager.GetUserAsync(User);
+                var utilizador = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Nome == userData.Nome);
 
+                subscricao.UtilizadorFK = utilizador.Id;
 
-            if (!string.IsNullOrEmpty(lstTags))
-            {
-                int[] splTags = lstTags.Split(',').Select(Int32.Parse).ToArray();
-
-                if (splTags.Count() > 0)
+                Console.WriteLine("");
+                if (subscricao.Preco < 12)
                 {
-                    var PostTags = _context.Filmes.Where(w => splTags.Contains(w.Id)).ToList();
+                    subscricao.DataFim = subscricao.DataInicio.AddMonths(1);
+                    subscricao.Duracao = 1;
+                }
+                else if (subscricao.Preco < 45 && subscricao.Preco > 13)
+                {
+                    subscricao.DataFim = subscricao.DataInicio.AddMonths(6);
+                    subscricao.Duracao = 6;
+                }
+                else
+                {
+                    subscricao.DataFim = subscricao.DataInicio.AddMonths(12);
+                    subscricao.Duracao = 12;
+                }
 
-                    subscricao.Filmes.AddRange(PostTags);
+                string lstTags = Request.Form["checkFilmes"];
+                string lstTags1 = Request.Form["checkSeries"];
+
+
+                if (!string.IsNullOrEmpty(lstTags))
+                {
+                    int[] splTags = lstTags.Split(',').Select(Int32.Parse).ToArray();
+
+                    if (splTags.Count() > 0)
+                    {
+                        var PostTags = _context.Filmes.Where(w => splTags.Contains(w.Id)).ToList();
+
+                        subscricao.Filmes.AddRange(PostTags);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(lstTags1))
+                {
+                    int[] splTags1 = lstTags1.Split(',').Select(Int32.Parse).ToArray();
+
+                    if (splTags1.Count() > 0)
+                    {
+                        var PostTags1 = _context.Series.Where(w => splTags1.Contains(w.Id)).ToList();
+
+                        subscricao.Series.AddRange(PostTags1);
+                    }
                 }
             }
 
-            if (!string.IsNullOrEmpty(lstTags1))
-            {
-                int[] splTags1 = lstTags1.Split(',').Select(Int32.Parse).ToArray();
+            
 
-                if (splTags1.Count() > 0)
-                {
-                    var PostTags1 = _context.Series.Where(w => splTags1.Contains(w.Id)).ToList();
-
-                    subscricao.Series.AddRange(PostTags1);
-                }
-            }
-
-            await AlterarRole();
+            await AlterarRole(subscricao);
 
 
             try
                 {
                     _context.Add(subscricao);
                     await _context.SaveChangesAsync();
-
-                    
-                    // Call AlterarRole method to update user role
                     
 
                     return RedirectToAction(nameof(Index));
@@ -176,6 +244,18 @@ namespace TMelix.Controllers
             {
                 return NotFound();
             }
+
+            var userData = await _userManager.GetUserAsync(User);
+            var utilizador = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Nome == userData.Nome);
+
+            if (!User.IsInRole("Administrador"))
+            {
+                if (subscricao.UtilizadorFK != utilizador.Id)
+                {
+                    return Forbid();
+                }
+            }
+
             ViewData["UtilizadorFK"] = new SelectList(_context.Set<Utilizador>(), "Id", "Nome", subscricao.UtilizadorFK);
             return View(subscricao);
         }
@@ -192,51 +272,110 @@ namespace TMelix.Controllers
                 return NotFound();
             }
 
-            subscricao.DataInicio = DateTime.Now;
+            if (User.IsInRole("Administrador"))
+            {
+                subscricao.DataInicio = DateTime.Now;
 
-            if (subscricao.Preco < 12)
-            {
-                subscricao.DataFim = subscricao.DataInicio.AddMonths(1);
-                subscricao.Duracao = 1;
-            }
-            else if (subscricao.Preco < 45 && subscricao.Preco > 13)
-            {
-                subscricao.DataFim = subscricao.DataInicio.AddMonths(6);
-                subscricao.Duracao = 6;
+                if (subscricao.Preco < 12)
+                {
+                    subscricao.DataFim = subscricao.DataInicio.AddMonths(1);
+                    subscricao.Duracao = 1;
+                }
+                else if (subscricao.Preco < 45 && subscricao.Preco > 13)
+                {
+                    subscricao.DataFim = subscricao.DataInicio.AddMonths(6);
+                    subscricao.Duracao = 6;
+                }
+                else
+                {
+                    subscricao.DataFim = subscricao.DataInicio.AddMonths(12);
+                    subscricao.Duracao = 12;
+                }
+
+                string lstTags = Request.Form["checkFilmes"];
+                string lstTags1 = Request.Form["checkSeries"];
+
+
+                if (!string.IsNullOrEmpty(lstTags))
+                {
+                    int[] splTags = lstTags.Split(',').Select(Int32.Parse).ToArray();
+
+                    if (splTags.Count() > 0)
+                    {
+                        var PostTags = _context.Filmes.Where(w => splTags.Contains(w.Id)).ToList();
+
+                        subscricao.Filmes.AddRange(PostTags);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(lstTags1))
+                {
+                    int[] splTags1 = lstTags1.Split(',').Select(Int32.Parse).ToArray();
+
+                    if (splTags1.Count() > 0)
+                    {
+                        var PostTags1 = _context.Series.Where(w => splTags1.Contains(w.Id)).ToList();
+
+                        subscricao.Series.AddRange(PostTags1);
+                    }
+                }
             }
             else
             {
-                subscricao.DataFim = subscricao.DataInicio.AddMonths(12);
-                subscricao.Duracao = 12;
-            }
+                subscricao.DataInicio = DateTime.Now;
+                var userData = await _userManager.GetUserAsync(User);
+                var utilizador = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Nome == userData.Nome);
 
-            string lstTags = Request.Form["checkFilmes"];
-            string lstTags1 = Request.Form["checkSeries"];
+                subscricao.UtilizadorFK = utilizador.Id;
 
+                Console.WriteLine("");
 
-            if (!string.IsNullOrEmpty(lstTags))
-            {
-                int[] splTags = lstTags.Split(',').Select(Int32.Parse).ToArray();
-
-                if (splTags.Count() > 0)
+                if (subscricao.Preco < 12)
                 {
-                    var PostTags = _context.Filmes.Where(w => splTags.Contains(w.Id)).ToList();
+                    subscricao.DataFim = subscricao.DataInicio.AddMonths(1);
+                    subscricao.Duracao = 1;
+                }
+                else if (subscricao.Preco < 45 && subscricao.Preco > 13)
+                {
+                    subscricao.DataFim = subscricao.DataInicio.AddMonths(6);
+                    subscricao.Duracao = 6;
+                }
+                else
+                {
+                    subscricao.DataFim = subscricao.DataInicio.AddMonths(12);
+                    subscricao.Duracao = 12;
+                }
 
-                    subscricao.Filmes.AddRange(PostTags);
+                string lstTags = Request.Form["checkFilmes"];
+                string lstTags1 = Request.Form["checkSeries"];
+
+
+                if (!string.IsNullOrEmpty(lstTags))
+                {
+                    int[] splTags = lstTags.Split(',').Select(Int32.Parse).ToArray();
+
+                    if (splTags.Count() > 0)
+                    {
+                        var PostTags = _context.Filmes.Where(w => splTags.Contains(w.Id)).ToList();
+
+                        subscricao.Filmes.AddRange(PostTags);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(lstTags1))
+                {
+                    int[] splTags1 = lstTags1.Split(',').Select(Int32.Parse).ToArray();
+
+                    if (splTags1.Count() > 0)
+                    {
+                        var PostTags1 = _context.Series.Where(w => splTags1.Contains(w.Id)).ToList();
+
+                        subscricao.Series.AddRange(PostTags1);
+                    }
                 }
             }
 
-            if (!string.IsNullOrEmpty(lstTags1))
-            {
-                int[] splTags1 = lstTags1.Split(',').Select(Int32.Parse).ToArray();
-
-                if (splTags1.Count() > 0)
-                {
-                    var PostTags1 = _context.Series.Where(w => splTags1.Contains(w.Id)).ToList();
-
-                    subscricao.Series.AddRange(PostTags1);
-                }
-            }
+           
 
             if (ModelState.IsValid)
             {
@@ -280,6 +419,17 @@ namespace TMelix.Controllers
                 return NotFound();
             }
 
+            var userData = await _userManager.GetUserAsync(User);
+            var utilizador = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Nome == userData.Nome);
+
+            if (!User.IsInRole("Administrador"))
+            {
+                if (subscricao.UtilizadorFK != utilizador.Id)
+                {
+                    return Forbid();
+                }
+            }
+
             return View(subscricao);
         }
 
@@ -293,10 +443,12 @@ namespace TMelix.Controllers
                 return Problem("Entity set 'ApplicationDbContext.Subscricoes'  is null.");
             }
             var subscricao = await _context.Subscricoes.FindAsync(id);
+            await AlterarRoleC(subscricao);
             if (subscricao != null)
             {
                 _context.Subscricoes.Remove(subscricao);
             }
+
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -307,14 +459,57 @@ namespace TMelix.Controllers
           return (_context.Subscricoes?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
-        public async Task<IActionResult> AlterarRole()
+        public async Task<IActionResult> AlterarRole(Subscricao subscricao)
         {
-            var userData = await _userManager.GetUserAsync(User);
-            await _userManager.RemoveFromRoleAsync(userData, "Cliente");
-            userData.Funcao = "Susbcritor";
-            await _userManager.UpdateAsync(userData);
-            await _userManager.AddToRoleAsync(userData, "Subscritor");
-            await _signInManager.RefreshSignInAsync(userData);
+            if (User.IsInRole("Administrador"))
+            {
+                var utilizador = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Id == subscricao.UtilizadorFK);
+                var user = await _userManager.FindByIdAsync(utilizador.UserID.ToString());
+                Console.WriteLine("");
+
+                await _userManager.RemoveFromRoleAsync(user, "Cliente");
+                user.Funcao = "Subscritor";
+                await _userManager.UpdateAsync(user);
+                await _userManager.AddToRoleAsync(user, "Subscritor");
+                await _userManager.UpdateSecurityStampAsync(user);
+            }
+            else
+            {
+                var userData = await _userManager.GetUserAsync(User);
+                await _userManager.RemoveFromRoleAsync(userData, "Cliente");
+                userData.Funcao = "Subscritor";
+                await _userManager.UpdateAsync(userData);
+                await _userManager.AddToRoleAsync(userData, "Subscritor");
+                await _signInManager.RefreshSignInAsync(userData);
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> AlterarRoleC(Subscricao subscricao)
+        {
+
+            if (User.IsInRole("Administrador"))
+            {
+                var utilizador = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Id == subscricao.UtilizadorFK);
+                var user = await _userManager.FindByIdAsync(utilizador.UserID.ToString());
+             
+                    await _userManager.RemoveFromRoleAsync(user, "Subscritor");
+                    user.Funcao = "Cliente";
+                    await _userManager.UpdateAsync(user);
+                    await _userManager.AddToRoleAsync(user, "Cliente");
+                    await _userManager.UpdateSecurityStampAsync(user);
+            }
+            else
+            {
+                var userData = await _userManager.GetUserAsync(User);
+                await _userManager.RemoveFromRoleAsync(userData, "Subscritor");
+                userData.Funcao = "Cliente";
+                await _userManager.UpdateAsync(userData);
+                await _userManager.AddToRoleAsync(userData, "Cliente");
+                await _signInManager.RefreshSignInAsync(userData);
+            }
+
+           
             return RedirectToAction(nameof(Index));
         }
     }
