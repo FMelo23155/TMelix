@@ -36,12 +36,43 @@ namespace TMelix.Controllers
         public async Task<IActionResult> Index()
         {
             PopulateFilmesSeries();
-            
-            var applicationDbContext = _context.Subscricoes
-                .Include(s => s.Utilizador)
-                .Include(s => s.Filmes)
-                .Include(s => s.Series);
-            return View(await applicationDbContext.ToListAsync());
+            if (User.IsInRole("Subscritor"))
+            {
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    // User not found, handle accordingly (e.g., redirect to login)
+                    return RedirectToAction("Login", "Account");
+                }
+
+                var utilizador = await _context.Utilizadores
+                    .FirstOrDefaultAsync(u => u.Nome == user.Nome);
+
+                if (utilizador == null)
+                {
+                    // Utilizador not found, handle accordingly
+                    return RedirectToAction("Login", "Account");
+                }
+
+                var applicationDbContext = _context.Subscricoes
+                    .Where(s => s.UtilizadorFK == utilizador.Id)
+                    .Include(s => s.Utilizador)
+                    .Include(s => s.Filmes)
+                    .Include(s => s.Series);
+
+                return View(await applicationDbContext.ToListAsync());
+            }
+            else
+            {
+                var applicationDbContext = _context.Subscricoes
+                    .Include(s => s.Utilizador)
+                    .Include(s => s.Filmes)
+                    .Include(s => s.Series);
+
+                return View(await applicationDbContext.ToListAsync());
+            }
+
+
         }
 
         // GET: Subscricoes/Details/5
@@ -54,14 +85,14 @@ namespace TMelix.Controllers
 
             var subscricao = await _context.Subscricoes
                 .Include(s => s.Utilizador)
-                .Include(s=> s.Filmes)
+                .Include(s => s.Filmes)
                 .Include(s => s.Series)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (subscricao == null)
             {
                 return NotFound();
             }
-            
+
             var userData = await _userManager.GetUserAsync(User);
             var utilizador = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Nome == userData.Nome);
 
@@ -73,7 +104,7 @@ namespace TMelix.Controllers
                 }
             }
 
-            
+
 
             return View(subscricao);
         }
@@ -85,7 +116,9 @@ namespace TMelix.Controllers
 
 
             PopulateFilmesSeries();
-
+            if(User.IsInRole("Subscritor")) {
+                return Forbid();
+            }
 
             return View();
         }
@@ -97,13 +130,13 @@ namespace TMelix.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,UtilizadorFK,Duracao,Preco,DataInicio,DataFim")] Subscricao subscricao)
         {
-            
+
             subscricao.DataInicio = DateTime.Now;
 
 
 
             string aux = Request.Form["Preco"];
-            
+
             float preco = float.Parse(aux);
             subscricao.Preco = preco;
 
@@ -207,25 +240,25 @@ namespace TMelix.Controllers
                 }
             }
 
-            
+
 
             await AlterarRole(subscricao);
 
 
             try
-                {
-                    _context.Add(subscricao);
-                    await _context.SaveChangesAsync();
-                    
+            {
+                _context.Add(subscricao);
+                await _context.SaveChangesAsync();
 
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (Exception)
-                {
-                    // Handle exceptions appropriately
-                    return View(subscricao);
-                }
-            
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception)
+            {
+                // Handle exceptions appropriately
+                return View(subscricao);
+            }
+
 
         }
 
@@ -375,7 +408,7 @@ namespace TMelix.Controllers
                 }
             }
 
-           
+
 
             if (ModelState.IsValid)
             {
@@ -449,14 +482,14 @@ namespace TMelix.Controllers
                 _context.Subscricoes.Remove(subscricao);
             }
 
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool SubscricaoExists(int id)
         {
-          return (_context.Subscricoes?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Subscricoes?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
         public async Task<IActionResult> AlterarRole(Subscricao subscricao)
@@ -492,12 +525,12 @@ namespace TMelix.Controllers
             {
                 var utilizador = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Id == subscricao.UtilizadorFK);
                 var user = await _userManager.FindByIdAsync(utilizador.UserID.ToString());
-             
-                    await _userManager.RemoveFromRoleAsync(user, "Subscritor");
-                    user.Funcao = "Cliente";
-                    await _userManager.UpdateAsync(user);
-                    await _userManager.AddToRoleAsync(user, "Cliente");
-                    await _userManager.UpdateSecurityStampAsync(user);
+
+                await _userManager.RemoveFromRoleAsync(user, "Subscritor");
+                user.Funcao = "Cliente";
+                await _userManager.UpdateAsync(user);
+                await _userManager.AddToRoleAsync(user, "Cliente");
+                await _userManager.UpdateSecurityStampAsync(user);
             }
             else
             {
@@ -509,7 +542,7 @@ namespace TMelix.Controllers
                 await _signInManager.RefreshSignInAsync(userData);
             }
 
-           
+
             return RedirectToAction(nameof(Index));
         }
     }

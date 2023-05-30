@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,25 +14,44 @@ namespace TMelix.Controllers
     public class FilmesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
- 
 
-        public FilmesController(ApplicationDbContext context)
+
+        public FilmesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
-         
+            _userManager = userManager;
+
         }
 
         // GET: Filmes
         public async Task<IActionResult> Index()
         {
 
+            if (User.IsInRole("Subscritor"))
+            {
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+                var utilizador = await _context.Utilizadores
+                    .FirstOrDefaultAsync(u => u.Nome == user.Nome);
+
+                var filmes = await _context.Filmes
+                    .Where(f => f.Subscricoes.Any(s => s.UtilizadorFK == utilizador.Id))
+                    .ToListAsync();
+                return View(filmes);
+            }
+
+
             if (User.IsInRole("Cliente"))
             {
                 return Forbid();
             }
 
-            return _context.Filmes != null ? 
+            return _context.Filmes != null ?
                           View(await _context.Filmes.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.Filmes'  is null.");
         }
@@ -166,14 +186,14 @@ namespace TMelix.Controllers
             {
                 _context.Filmes.Remove(filme);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool FilmeExists(int id)
         {
-          return (_context.Filmes?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Filmes?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
