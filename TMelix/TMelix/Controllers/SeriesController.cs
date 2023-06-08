@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,22 +14,43 @@ namespace TMelix.Controllers
     public class SeriesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public SeriesController(ApplicationDbContext context)
+        public SeriesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Series
         public async Task<IActionResult> Index()
         {
-            if(User.IsInRole("Cliente")){
+            if (User.IsInRole("Subscritor"))
+            {
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
+                var utilizador = await _context.Utilizadores
+                    .FirstOrDefaultAsync(u => u.Nome == user.Nome);
+
+                var series = await _context.Series
+                    .Where(f => f.Subscricoes.Any(s => s.UtilizadorFK == utilizador.Id))
+                    .ToListAsync();
+
+                return View(series);
+            }
+
+            if (User.IsInRole("Cliente"))
+            {
                 return Forbid();
             }
 
-              return _context.Series != null ? 
-                          View(await _context.Series.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Series'  is null.");
+            return _context.Series != null ?
+                        View(await _context.Series.ToListAsync()) :
+                        Problem("Entity set 'ApplicationDbContext.Series'  is null.");
         }
 
         // GET: Series/Details/5
@@ -107,7 +129,7 @@ namespace TMelix.Controllers
             }
 
 
-           
+
 
             if (ModelState.IsValid)
             {
@@ -164,14 +186,14 @@ namespace TMelix.Controllers
             {
                 _context.Series.Remove(serie);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool SerieExists(int id)
         {
-          return (_context.Series?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Series?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

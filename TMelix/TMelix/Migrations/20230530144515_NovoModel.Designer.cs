@@ -12,8 +12,8 @@ using TMelix.Data;
 namespace TMelix.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230521113719_fix")]
-    partial class fix
+    [Migration("20230530144515_NovoModel")]
+    partial class NovoModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,17 +26,17 @@ namespace TMelix.Migrations
 
             modelBuilder.Entity("FilmeSubscricao", b =>
                 {
-                    b.Property<int>("FilmesId")
+                    b.Property<int>("FilmeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SubscricoesId")
+                    b.Property<int>("SubscricaoId")
                         .HasColumnType("int");
 
-                    b.HasKey("FilmesId", "SubscricoesId");
+                    b.HasKey("FilmeId", "SubscricaoId");
 
-                    b.HasIndex("SubscricoesId");
+                    b.HasIndex("SubscricaoId");
 
-                    b.ToTable("FilmeSubscricao");
+                    b.ToTable("FilmeSubscricao", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -69,16 +69,23 @@ namespace TMelix.Migrations
                         new
                         {
                             Id = "a",
-                            ConcurrencyStamp = "d8e8119b-6e25-49b3-ae83-24b2e4cadcdb",
+                            ConcurrencyStamp = "70ec0530-a16c-455b-8ba7-28b9e4f44a45",
                             Name = "Administrador",
                             NormalizedName = "ADMINISTRADOR"
                         },
                         new
                         {
                             Id = "c",
-                            ConcurrencyStamp = "2a1caf17-1e22-4f8a-9ad4-494e6613acd4",
+                            ConcurrencyStamp = "c86ea971-3c2f-4689-855c-927410c5dedc",
                             Name = "Cliente",
                             NormalizedName = "CLIENTE"
+                        },
+                        new
+                        {
+                            Id = "s",
+                            ConcurrencyStamp = "4519cbe4-dc1a-4a15-a17a-566527ab4ef9",
+                            Name = "Subscritor",
+                            NormalizedName = "SUBSCRITOR"
                         });
                 });
 
@@ -194,17 +201,17 @@ namespace TMelix.Migrations
 
             modelBuilder.Entity("SerieSubscricao", b =>
                 {
-                    b.Property<int>("SeriesId")
+                    b.Property<int>("SerieId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SubscricoesId")
+                    b.Property<int>("SubscricaoId")
                         .HasColumnType("int");
 
-                    b.HasKey("SeriesId", "SubscricoesId");
+                    b.HasKey("SerieId", "SubscricaoId");
 
-                    b.HasIndex("SubscricoesId");
+                    b.HasIndex("SubscricaoId");
 
-                    b.ToTable("SerieSubscricao");
+                    b.ToTable("SerieSubscricao", (string)null);
                 });
 
             modelBuilder.Entity("TMelix.Data.ApplicationUser", b =>
@@ -463,15 +470,17 @@ namespace TMelix.Migrations
                 {
                     b.HasOne("TMelix.Models.Filme", null)
                         .WithMany()
-                        .HasForeignKey("FilmesId")
+                        .HasForeignKey("FilmeId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_FilmeSubscricao_Filme_FilmeId");
 
                     b.HasOne("TMelix.Models.Subscricao", null)
                         .WithMany()
-                        .HasForeignKey("SubscricoesId")
+                        .HasForeignKey("SubscricaoId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_FilmeSubscricao_Subscricao_SubscricaoId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -529,15 +538,17 @@ namespace TMelix.Migrations
                 {
                     b.HasOne("TMelix.Models.Serie", null)
                         .WithMany()
-                        .HasForeignKey("SeriesId")
+                        .HasForeignKey("SerieId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_SerieSubscricao_Serie_SerieId");
 
                     b.HasOne("TMelix.Models.Subscricao", null)
                         .WithMany()
-                        .HasForeignKey("SubscricoesId")
+                        .HasForeignKey("SubscricaoId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_SerieSubscricao_Subscricao_SubscricaoId");
                 });
 
             modelBuilder.Entity("TMelix.Models.Subscricao", b =>
