@@ -62,6 +62,10 @@ namespace TMelix.Controllers
         // GET: Utilizadores/Create
         public IActionResult Create()
         {
+            if (!User.IsInRole("Administrador"))
+            {
+                return Forbid();
+            }
             return View();
         }
 

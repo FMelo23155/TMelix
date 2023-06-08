@@ -3,197 +3,93 @@
 @model IEnumerable<TMelix.Models.Utilizador>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Utilizadores";
 }
+
+<script src="https://kit.fontawesome.com/f9a7bbed8a.js" crossorigin="anonymous"></script>
 
 @inject UserManager<ApplicationUser> _userManager
 @inject SignInManager<ApplicationUser> _signInManager
 
-
-<h1>Index</h1>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<h1>@ViewData["Title"]</h1>
 
 @if(_signInManager.IsSignedIn(User) && !User.IsInRole("Administrador")){
+
     var userId = _userManager.GetUserId(User);
 
     var cliente = Model.FirstOrDefault(s => s.UserID.ToString() == userId);
-    Console.WriteLine("");
+    var user = await _userManager.FindByIdAsync(cliente.UserID); // Access user using _userManager
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Nome)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Email)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.NIF)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Morada)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Pais)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.CodPostal)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Sexo)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DataNasc)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.UserID)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.UserF)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-    
-            @{
-                        var user = await _userManager.FindByIdAsync(cliente.UserID); // Access user using _userManager
+     var funcao = user?.Funcao; // Access Funcao from the user
 
-                        var funcao = user?.Funcao; // Access Funcao from the user
+     <div style="width:300px" class="flex-container space-between">
 
-                        Console.WriteLine("");
-            }
-                
 
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => cliente.Nome)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => cliente.Email)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => cliente.NIF)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => cliente.Morada)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => cliente.Pais)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => cliente.CodPostal)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => cliente.Sexo)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => cliente.DataNasc)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => cliente.UserID)
-                    </td>
-                    <td>
-                        @funcao
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@cliente.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@cliente.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@cliente.Id">Delete</a>
-                    </td>
-                </tr>
-            
-        </tbody>
-    </table>
+    <div class="col card">
+        <div class="img-placeholder">
+            <img src="~/Fotos/userFoto.png">
+        </div>
+        <div>
+            <br>
+            <h3 style="color:black">@Html.DisplayFor(modelItem => cliente.Nome)</h3>
+            <p><i class="fa-solid fa-user"></i> @funcao</p>
+            <p><i class="fa-solid fa-envelope"></i> @Html.DisplayFor(modelItem => cliente.Email)</p>
+                <p><i class="fa-solid fa-location-dot"></i> @Html.DisplayFor(modelItem => cliente.Morada), @Html.DisplayFor(modelItem => cliente.Pais)</p>
+        </div>
+        <div class="movie_social">
+            <ul>
+                <li><a asp-action="Details" asp-route-id="@cliente.Id" class="material-icons">add</a></li>
+                <li><a asp-action="Edit" asp-route-id="@cliente.Id" class="material-icons">edit</a></li>
+
+            </ul>
+        </div>
+    </div>
+    </div>
+
 
 
 }else{
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Nome)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Email)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.NIF)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Morada)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Pais)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.CodPostal)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Sexo)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DataNasc)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.UserID)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.UserF)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+   
+        <a class="button-34 a1" asp-action="Create">Crie um novo utilizador</a>
+    
+    
+    <div class="flex-container space-between">
 
-                var user = await _userManager.FindByIdAsync(item.UserID); // Access user using _userManager
-                var funcao = user?.Funcao; // Access Funcao from the user
+    @foreach (var item in Model)
+    {
 
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Nome)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.NIF)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Morada)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Pais)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CodPostal)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Sexo)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DataNasc)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UserID)
-                    </td>
-                    <td>
-                        @funcao
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+        var user = await _userManager.FindByIdAsync(item.UserID); // Access user using _userManager
+        var funcao = user?.Funcao; // Access Funcao from the user
+
+
+            <div class="col card">
+                <div class="img-placeholder">
+                    <img src="~/Fotos/userFoto.png">
+                </div>
+                <div>
+                    <br>
+                    <h3 style="color:black">@Html.DisplayFor(modelItem => item.Nome)</h3>
+                    <p><i class="fa-solid fa-user"></i> @funcao</p>
+                    <p><i class="fa-solid fa-envelope"></i> @Html.DisplayFor(modelItem => item.Email)</p>
+                    <p><i class="fa-solid fa-location-dot"></i> @Html.DisplayFor(modelItem => item.Morada), @Html.DisplayFor(modelItem => item.Pais)</p>
+                </div>
+                <div class="movie_social">
+                    <ul>
+                        <li><a asp-action="Details" asp-route-id="@item.Id" class="material-icons">add</a></li>
+                        <li><a asp-action="Edit" asp-route-id="@item.Id" class="material-icons">edit</a></li>
+                        <li><a asp-action="Delete" asp-route-id="@item.Id" class="material-icons">delete</a></li>
+
+                    </ul>
+                </div>
+            </div>
+    }
+    </div>
+   
 }
+
+
+
+   
 
 

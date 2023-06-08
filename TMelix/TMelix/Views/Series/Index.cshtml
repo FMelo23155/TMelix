@@ -3,18 +3,21 @@
 @model IEnumerable<TMelix.Models.Serie>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Séries";
 }
 
-<h1>Index</h1>
+<h1>@ViewData["Title"]</h1>
 
 @inject SignInManager<ApplicationUser> _signInManager
 @inject UserManager<ApplicationUser> _userManager
 
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+@if(_signInManager.IsSignedIn(User) && User.IsInRole("Administrador")){
+    <a class="button-34 a1" asp-action="Create">Create New</a>
+}
 
-
-
+<div class="center-div">
+    <br />
 @if (_signInManager.IsSignedIn(User) && !User.IsInRole("Administrador"))
 {
     @foreach (var item in Model)
@@ -60,11 +63,12 @@
             </div><!--movie-content-->
     }
 }else{
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
+    
+
     @foreach (var item in Model)
     {
+            <br />
         <div class="mv-card">
             <div class="mv-header" style="background-image: url(@Html.DisplayFor(modelItem => item.Imagem)); background-size: cover;">
 
@@ -115,3 +119,4 @@
     }
 
 }
+</div>

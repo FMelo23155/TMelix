@@ -80,6 +80,10 @@ namespace TMelix.Controllers
         // GET: Series/Create
         public IActionResult Create()
         {
+            if (!User.IsInRole("Administrador"))
+            {
+                return Forbid();
+            }
             return View();
         }
 

@@ -83,6 +83,10 @@ namespace TMelix.Controllers
         // GET: Filmes/Create
         public IActionResult Create()
         {
+            if (!User.IsInRole("Administrador"))
+            {
+                return Forbid();
+            }
             return View();
         }
 

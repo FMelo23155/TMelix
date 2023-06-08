@@ -11,8 +11,12 @@
 
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <h1>@ViewData["Title"]</h1>
-
-
+@if (_signInManager.IsSignedIn(User) && User.IsInRole("Administrador"))
+{
+	<a class="button-34 a1" asp-action="Create">Create New</a>
+}
+<div class="center-div">
+	<br />
 @if (_signInManager.IsSignedIn(User) && !User.IsInRole("Administrador"))
 {
     
@@ -62,17 +66,15 @@
 }
 else
 {
-    <p>
-        <a asp-action="Create">Create New</a>
-	</p>
+   
 
-
+	<br />
 	
 
             @foreach (var item in Model)
             {
 
-		var elenco = @Html.DisplayFor(modelItem => item.Elenco);
+				var elenco = @Html.DisplayFor(modelItem => item.Elenco);
 
 
                 <div class="mv-card">
@@ -119,10 +121,10 @@ else
 		</div><!--movie-content-->
 	</div>
             }
-         
+	
 }
 
-     
+</div>
 
 
 

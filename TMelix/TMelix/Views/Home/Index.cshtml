@@ -11,7 +11,7 @@
 
 <div class="inicio">
 
- 
+    <img class="logo" alt="Logotipo" src="~/Fotos/logo-no-background.png" />
 
     @if (_signInManager.IsSignedIn(User) && User.IsInRole("Administrador"))
     {
@@ -24,11 +24,11 @@
             <br />
             <button class="button-34" role="button" asp-area="" asp-controller="Utilizadores" asp-action="Index">Utilizadores</button>
             <br />
-            <button class="button-34" role="button" asp-area="" asp-controller="Subscricoes" asp-action="Index">Subscrição</button>
+            <button class="button-34" role="button" asp-area="" asp-controller="Subscricoes" asp-action="Index">Subscrições</button>
             <br />
-            <button class="button-34" role="button" asp-area="" asp-controller="Filmes" asp-action="Index">Filmes</button>
+            <button class="button-34" role="button" asp-area="" asp-controller="Filmes" asp-action="Index">Veja os filmes existentes</button>
             <br />
-            <button class="button-34" role="button" asp-area="" asp-controller="Series" asp-action="Index">Séries</button>
+            <button class="button-34" role="button" asp-area="" asp-controller="Series" asp-action="Index">Veja as séries existentes</button>
         </form>
 
     }
@@ -43,7 +43,7 @@
 
         <form class="bt">
             <br />
-            <button class="button-34" role="button" asp-area="" asp-controller="Subscricoes" asp-action="Index">Subscrição</button>
+            <button class="button-34" role="button" asp-area="" asp-controller="Subscricoes" asp-action="Index">Crie a sua subscrição!</button>
         </form>
 
     }
@@ -59,16 +59,20 @@
 
         <form class="bt">
             <br />
-            <button class="button-34" role="button" asp-area="" asp-controller="Filmes" asp-action="Index">Filmes</button>
+            <button class="button-34" role="button" asp-area="" asp-controller="Filmes" asp-action="Index">Veja os seus Filmes</button>
             <br />
-            <button class="button-34" role="button" asp-area="" asp-controller="Series" asp-action="Index">Séries</button>
+            <button class="button-34" role="button" asp-area="" asp-controller="Series" asp-action="Index">Veja as suas Séries</button>
+            <br>
+            <button class="button-34" role="button" asp-area="" asp-controller="Utilizadores" asp-action="Index">Veja os detalhes da sua conta</button>
+            <br>
+            <button class="button-34" role="button" asp-area="" asp-controller="Subscricoes" asp-action="Index">Veja os detalhes da sua subscrição</button>
+
         </form>
 
     }
     else
     {
 
-        <img class="logo" alt="Logotipo" src="~/Fotos/logo-no-background.png" />
         <form class="bt">
             <br />
             <button class="button-34" role="button" asp-area="Identity" asp-page="/Account/Register">Registo</button>

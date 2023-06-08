@@ -17,10 +17,8 @@
 @if (_signInManager.IsSignedIn(User) && User.IsInRole("Administrador"))
 {
 
-
-    <p>
-        <a asp-action="Create">Criar novas Subscrições</a>
-    </p>
+        <a class="button-34 a1" asp-action="Create">Criar novas Subscrições</a>
+   
     <table class="table">
         <thead>
             <tr>
@@ -59,7 +57,7 @@
                         @Html.DisplayFor(modelItem => item.Duracao)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Preco)
+                        @Html.DisplayFor(modelItem => item.Preco)€
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.DataInicio)
@@ -127,7 +125,7 @@ else if (_signInManager.IsSignedIn(User) && User.IsInRole("Subscritor"))
                 <tr>
                     <td>@Html.DisplayFor(modelItem => clienteSubscricao.Utilizador.Nome)</td>
                     <td>@Html.DisplayFor(modelItem => clienteSubscricao.Duracao)</td>
-                    <td>@Html.DisplayFor(modelItem => clienteSubscricao.Preco)</td>
+                    <td>@Html.DisplayFor(modelItem => clienteSubscricao.Preco)€</td>
                     <td>@Html.DisplayFor(modelItem => clienteSubscricao.DataInicio)</td>
                     <td>@Html.DisplayFor(modelItem => clienteSubscricao.DataFim)</td>
                     <th>
@@ -152,6 +150,6 @@ else if (_signInManager.IsSignedIn(User) && User.IsInRole("Subscritor"))
 
 }else{
     <p>
-        <a asp-action="Create">Criar novas Subscrições</a>
+        <a class="button-34 a1" asp-action="Create">Criar novas Subscrições</a>
     </p>
 }
