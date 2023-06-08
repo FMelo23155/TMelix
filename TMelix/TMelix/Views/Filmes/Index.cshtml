@@ -32,7 +32,6 @@
 					<div class="mvs">
 						<h3 class="title">@Html.DisplayFor(modelItem => item.Titulo)</h3>
 						<h4 style="font-weight:lighter !important; color: black;font-size:20px">@Html.DisplayFor(modelItem => item.Genero)</h4>
-						<span style="text-align:center">@Html.DisplayFor(modelItem => item.Sinopse)</span>
 
 					</div>
 
@@ -45,20 +44,13 @@
 					</div><!--date,time-->
 					<div class="info-section">
 						<label>Classificação</label>
-						<span>@Html.DisplayFor(modelItem => item.Classificacao)</span>
+						<span>@Html.DisplayFor(modelItem => item.Classificacao)/5</span>
 					</div><!--screen-->
 					<div class="info-section">
 						<label>Elenco</label>
-						<span>@Html.DisplayFor(modelItem => item.Elenco)</span>
+						<span><a asp-action="Details" asp-route-id="@item.Id" class="material-icons">add</a></span>
 					</div><!--row-->
 					<br>
-					<div class="movie_social">
-						<ul>
-							<li><a asp-action="Edit" asp-route-id="@item.Id" class="material-icons">edit</a></li>
-							<li><a asp-action="Delete" asp-route-id="@item.Id" class="material-icons">delete</a></li>
-
-						</ul>
-					</div>
 				</div>
 			</div><!--movie-content-->
 		</div>
@@ -72,10 +64,17 @@ else
 {
     <p>
         <a asp-action="Create">Create New</a>
-    </p>
- 
+	</p>
+
+
+	
+
             @foreach (var item in Model)
             {
+
+		var elenco = @Html.DisplayFor(modelItem => item.Elenco);
+
+
                 <div class="mv-card">
             <div class="mv-header" style="background-image: url(@Html.DisplayFor(modelItem => item.Imagem)); background-size: cover;">
 
@@ -90,7 +89,6 @@ else
 				<div class="mvs">
                         <h3 class="title">@Html.DisplayFor(modelItem => item.Titulo)</h3>
                         <h4 style="font-weight:lighter !important; color: black;font-size:20px">@Html.DisplayFor(modelItem => item.Genero)</h4>
-                        <span style="text-align:center">@Html.DisplayFor(modelItem => item.Sinopse)</span>
 
 				</div>
 				
@@ -103,12 +101,12 @@ else
 				</div><!--date,time-->
 				<div class="info-section">
 					<label>Classificação</label>
-                        <span>@Html.DisplayFor(modelItem => item.Classificacao)</span>
+                        <span>@Html.DisplayFor(modelItem => item.Classificacao)/5</span>
 				</div><!--screen-->
-				<div class="info-section">
-					<label>Elenco</label>
-                        <span>@Html.DisplayFor(modelItem => item.Elenco)</span>
-				</div><!--row-->
+					<div class="info-section">
+						<label>Detalhes</label>
+						<span><a asp-action="Details" asp-route-id="@item.Id" class="material-icons">add</a></span>
+					</div><!--row-->
                 <br>
                     <div class="movie_social">
                         <ul>
@@ -120,10 +118,6 @@ else
 			</div>
 		</div><!--movie-content-->
 	</div>
-  
-  
-  
-	
             }
          
 }
