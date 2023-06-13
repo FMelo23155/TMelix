@@ -42,8 +42,14 @@ body {
     margin: auto;
 }
 
+.informacao_nos {
+    display: flex;
+    justify-content: center;
+}
 
-.button-34 {
+
+.button-34 {display: flex;
+  justify-content: center;
     background: #E65728;
     border-radius: 999px;
     box-shadow: #cc7000 0 10px 20px -10px;
