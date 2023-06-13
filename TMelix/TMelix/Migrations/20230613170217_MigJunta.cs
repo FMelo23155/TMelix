@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TMelix.Migrations
 {
-    public partial class builder : Migration
+    public partial class MigJunta : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -295,15 +295,15 @@ namespace TMelix.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "a", "80037bf5-459b-43f9-ab89-e427c11f83f7", "Administrador", "ADMINISTRADOR" },
-                    { "c", "dad66ea4-7c67-4511-ba19-7ec4ff8bc484", "Cliente", "CLIENTE" },
-                    { "s", "5cade1b1-57c4-432a-8b88-95e774e8a757", "Subscritor", "SUBSCRITOR" }
+                    { "a", "dc72421f-0c01-4884-a603-ed635a9a2ab1", "Administrador", "ADMINISTRADOR" },
+                    { "c", "2e2b0405-caa4-4abe-933c-7d0fdf4cc93c", "Cliente", "CLIENTE" },
+                    { "s", "c1716430-aee6-4b7c-b823-f5f54481b988", "Subscritor", "SUBSCRITOR" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "DataRegisto", "Email", "EmailConfirmed", "Funcao", "LockoutEnabled", "LockoutEnd", "Nome", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "1", 0, "828c8742-4f2b-4d05-8906-8908669a6916", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "a@a.a", false, "Administrador", false, null, "Admin", "A@A.A", "A@A.A", "AQAAAAEAACcQAAAAEMsKWIr3QsKOi/tN/iyyqh8LitS7w/bP8OGGO2/5+kloO5SCSSY/dQEPuLQjsID0VA==", null, false, "2393e8f9-d4c4-4c1b-9a52-992d2fa8acfa", false, "a@a.a" });
+                values: new object[] { "1", 0, "7589e516-22d6-454f-ada5-2f8dd75c57e1", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "a@a.a", false, "Administrador", false, null, "Admin", "A@A.A", "A@A.A", "AQAAAAEAACcQAAAAENYmAKf9JHZRdAzHjh8hPAio5XwvpFSJMOSpNoMt34OUeEhXMXWhn7pZowP+Y5JyXw==", null, false, "0ffe7ee0-e255-42d0-aee5-4ac77f0c0e6e", false, "a@a.a" });
 
             migrationBuilder.InsertData(
                 table: "Filmes",

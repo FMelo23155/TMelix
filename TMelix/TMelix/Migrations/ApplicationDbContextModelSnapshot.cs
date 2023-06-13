@@ -67,21 +67,21 @@ namespace TMelix.Migrations
                         new
                         {
                             Id = "a",
-                            ConcurrencyStamp = "80037bf5-459b-43f9-ab89-e427c11f83f7",
+                            ConcurrencyStamp = "dc72421f-0c01-4884-a603-ed635a9a2ab1",
                             Name = "Administrador",
                             NormalizedName = "ADMINISTRADOR"
                         },
                         new
                         {
                             Id = "c",
-                            ConcurrencyStamp = "dad66ea4-7c67-4511-ba19-7ec4ff8bc484",
+                            ConcurrencyStamp = "2e2b0405-caa4-4abe-933c-7d0fdf4cc93c",
                             Name = "Cliente",
                             NormalizedName = "CLIENTE"
                         },
                         new
                         {
                             Id = "s",
-                            ConcurrencyStamp = "5cade1b1-57c4-432a-8b88-95e774e8a757",
+                            ConcurrencyStamp = "c1716430-aee6-4b7c-b823-f5f54481b988",
                             Name = "Subscritor",
                             NormalizedName = "SUBSCRITOR"
                         });
@@ -299,7 +299,7 @@ namespace TMelix.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "828c8742-4f2b-4d05-8906-8908669a6916",
+                            ConcurrencyStamp = "7589e516-22d6-454f-ada5-2f8dd75c57e1",
                             DataRegisto = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "a@a.a",
                             EmailConfirmed = false,
@@ -308,9 +308,9 @@ namespace TMelix.Migrations
                             Nome = "Admin",
                             NormalizedEmail = "A@A.A",
                             NormalizedUserName = "A@A.A",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMsKWIr3QsKOi/tN/iyyqh8LitS7w/bP8OGGO2/5+kloO5SCSSY/dQEPuLQjsID0VA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENYmAKf9JHZRdAzHjh8hPAio5XwvpFSJMOSpNoMt34OUeEhXMXWhn7pZowP+Y5JyXw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2393e8f9-d4c4-4c1b-9a52-992d2fa8acfa",
+                            SecurityStamp = "0ffe7ee0-e255-42d0-aee5-4ac77f0c0e6e",
                             TwoFactorEnabled = false,
                             UserName = "a@a.a"
                         });
