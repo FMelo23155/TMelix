@@ -41,27 +41,6 @@ namespace TMelix.Data
                 new IdentityRole { Id = "s", Name = "Subscritor", NormalizedName = "SUBSCRITOR" }
             );
 
-            builder.Entity<ApplicationUser>().HasData(
-                    new ApplicationUser
-                    {
-                        Nome= "Admin",
-                        Funcao = "Administrador",
-                        Email = "a@a.a",
-                        UserName = "a@a.a",
-                        NormalizedUserName = "A@A.A",
-                        NormalizedEmail = "A@A.A",
-                        Id = "1",
-                        PasswordHash = new PasswordHasher<ApplicationUser>().HashPassword(null, "!Admin12345")
-                    }
-                );
-            builder.Entity<IdentityUserRole<string>>().HasData(
-                new IdentityUserRole<string>
-                 {
-                        RoleId = "a", 
-                        UserId = "1" 
-                 }
-            );
-
             builder.Entity<Serie>().HasData(
             new Serie
             {

@@ -6,8 +6,8 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
 
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 @inject SignInManager<ApplicationUser> _signInManager
 @inject UserManager<ApplicationUser> _userManager
 
@@ -18,138 +18,128 @@
 {
 
         <a class="button-34 a1" asp-action="Create">Criar novas Subscrições</a>
-   
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Utilizador)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Duracao)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Preco)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DataInicio)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DataFim)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Filmes)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Series)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
+        <br />
+   <div class="wrapper">
+    @foreach (var item in Model)
+    {
+        
+    <div class="table basic">
+                <div class="head_tab" >
+                    <h2 style="color:#E65728;">@Html.DisplayFor(modelItem => item.Utilizador.Nome)</h2>
+                </div>
+                <div class="aj_p"><p style="margin-bottom:0px !important; font-weight:bold;">De <strong>@Html.DisplayFor(modelItem => item.DataInicio)</strong></p></div>
+
+                <div class="aj_p"><p style="margin-bottom:0px !important; font-weight:bold;">Até <strong>@Html.DisplayFor(modelItem => item.DataFim)</strong></p></div>
+      <div class="price-section">
+        <div class="price-area" style="padding-top:0px !important">
+          <div class="inner-area">
+                            <span class="text" style="top:-30px; left:45px;color:black;">Preço</span>
+            <span class="text"style="color:#E65728;">€</span>
+            <span class="price" style="color:#E65728;">@Html.DisplayFor(modelItem => item.Preco)<span style="font-size:12px"></span></span>
+          </div>
+        </div>
+      </div>
+
+      <th class="features">
+        <h3 style="color:black">Filmes </h3>
+                    
+        @foreach (var item2 in item.Filmes)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Utilizador.Nome)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Duracao)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Preco)€
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DataInicio)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DataFim)
-                    </td>
-                    <th>
-                        @foreach (var item2 in item.Filmes)
-                        {
-                            <li>@Html.DisplayFor(modelItem => item2.Titulo)</li>
-                        }
-                    </th>
-                    <th>
-                        @foreach (var item2 in item.Series)
-                        {
-                            <li>@Html.DisplayFor(modelItem => item2.Titulo)</li>
-                        }
-                    </th>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Apagar</a>
-                    </td>
-                </tr>
+                <li>
+                      <span class="list-name" style="font-weight:bold">@Html.DisplayFor(modelItem => item2.Titulo)</span>
+                </li>
+                       
             }
-        </tbody>
-    </table>
+                    <br />
+        <h3 style="color:black">Séries </h3>
+                   
+         @foreach (var item2 in item.Series)
+            {
+                <li>
+                     <span class="list-name" style="font-weight:bold">@Html.DisplayFor(modelItem => item2.Titulo)</span>
+                </li>
+                
+               
+            }
+      </th>
+      <br>
+                <div class="movie_social" style="position:absolute;right:0; height: 50px; bottom:0;">
+                    <ul>
+                        <li><a asp-action="Edit" asp-route-id="@item.Id" class="material-icons">edit</a></li>
+                        <li><a asp-action="Delete" asp-route-id="@item.Id" class="material-icons">delete</a></li>
+
+                    </ul>
+                </div>
+        </div>
+    
+    }
+    </div>
 }
 else if (_signInManager.IsSignedIn(User) && User.IsInRole("Subscritor"))
 {
     var userId = _userManager.GetUserId(User);
     var clienteSubscricao = Model.FirstOrDefault(s => s.Utilizador.UserID.ToString() == userId);
 
+    <div class="wrapper" style="justify-content:center !important">
+        @if(clienteSubscricao !=null)
+        {
 
-    if (clienteSubscricao != null)
-    {
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Utilizador)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Duracao)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Preco)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.DataInicio)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.DataFim)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Filmes)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Series)
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>@Html.DisplayFor(modelItem => clienteSubscricao.Utilizador.Nome)</td>
-                    <td>@Html.DisplayFor(modelItem => clienteSubscricao.Duracao)</td>
-                    <td>@Html.DisplayFor(modelItem => clienteSubscricao.Preco)€</td>
-                    <td>@Html.DisplayFor(modelItem => clienteSubscricao.DataInicio)</td>
-                    <td>@Html.DisplayFor(modelItem => clienteSubscricao.DataFim)</td>
-                    <th>
-                        @foreach (var item2 in clienteSubscricao.Filmes)
-                        {
-                            <li>@Html.DisplayFor(modelItem => item2.Titulo)</li>
-                        }
-                    </th>
-                    <th>
-                        @foreach (var item2 in clienteSubscricao.Series)
-                        {
-                            <li>@Html.DisplayFor(modelItem => item2.Titulo)</li>
-                        }
-                    </th>
-                    <td>
-                        <a asp-action="Delete" asp-route-id="@clienteSubscricao.Id">Apagar</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+            <div class="table basic">
+                <div class="head_tab">
+                    <h2 style="color:#E65728;">@Html.DisplayFor(modelItem => clienteSubscricao.Utilizador.Nome)</h2>
+                </div>
+                <div class="aj_p"><p style="margin-bottom:0px !important; font-weight:bold;">De <strong>@Html.DisplayFor(modelItem => clienteSubscricao.DataInicio)</strong></p></div>
+
+                <div class="aj_p"><p style="margin-bottom:0px !important; font-weight:bold;">Até <strong>@Html.DisplayFor(modelItem => clienteSubscricao.DataFim)</strong></p></div>
+                <div class="price-section">
+                    <div class="price-area" style="padding-top:0px !important">
+                        <div class="inner-area">
+                            <span class="text" style="top:-30px; left:45px;color:black;">Preço</span>
+                            <span class="text" style="color:#E65728;">€</span>
+                            <span class="price" style="color:#E65728;">@Html.DisplayFor(modelItem => clienteSubscricao.Preco)<span style="font-size:12px"></span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <th class="features">
+                    <h3 style="color:black">Filmes </h3>
+
+                    @foreach (var item2 in clienteSubscricao.Filmes)
+                    {
+                        <li>
+                            <span class="list-name" style="font-weight:bold">@Html.DisplayFor(modelItem => item2.Titulo)</span>
+                        </li>
+
+                    }
+                    <br />
+                    <h3 style="color:black">Séries </h3>
+
+                    @foreach (var item2 in clienteSubscricao.Series)
+                    {
+                        <li>
+                            <span class="list-name" style="font-weight:bold">@Html.DisplayFor(modelItem => item2.Titulo)</span>
+                        </li>
+
+
+                    }
+                </th>
+                <br>
+                <div class="movie_social" style="position:absolute;right:0; height: 50px; bottom:0;">
+                    <ul>
+                        <li><a asp-action="Delete" asp-route-id="@clienteSubscricao.Id" class="material-icons">delete</a></li>
+
+                    </ul>
+                </div>
+            </div>
+
         }
-
+    </div>
+    
+    
 }else{
     <p>
         <a class="button-34 a1" asp-action="Create">Criar novas Subscrições</a>
     </p>
 }
+
+

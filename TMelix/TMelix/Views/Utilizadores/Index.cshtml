@@ -19,9 +19,9 @@
     var userId = _userManager.GetUserId(User);
 
     var cliente = Model.FirstOrDefault(s => s.UserID.ToString() == userId);
-    var user = await _userManager.FindByIdAsync(cliente.UserID); // Access user using _userManager
+    var user = await _userManager.FindByIdAsync(cliente.UserID); 
 
-     var funcao = user?.Funcao; // Access Funcao from the user
+     var funcao = user?.Funcao; 
 
      <div style="width:300px" class="flex-container space-between">
 
@@ -37,7 +37,8 @@
             <p><i class="fa-solid fa-envelope"></i> @Html.DisplayFor(modelItem => cliente.Email)</p>
                 <p><i class="fa-solid fa-location-dot"></i> @Html.DisplayFor(modelItem => cliente.Morada), @Html.DisplayFor(modelItem => cliente.Pais)</p>
         </div>
-        <div class="movie_social">
+        <br>
+            <div class="movie_social" style="position:absolute;right:0; height: 35px; bottom:0;">
             <ul>
                 <li><a asp-action="Details" asp-route-id="@cliente.Id" class="material-icons">add</a></li>
                 <li><a asp-action="Edit" asp-route-id="@cliente.Id" class="material-icons">edit</a></li>
@@ -74,7 +75,8 @@
                     <p><i class="fa-solid fa-envelope"></i> @Html.DisplayFor(modelItem => item.Email)</p>
                     <p><i class="fa-solid fa-location-dot"></i> @Html.DisplayFor(modelItem => item.Morada), @Html.DisplayFor(modelItem => item.Pais)</p>
                 </div>
-                <div class="movie_social">
+                <br>
+                <div class="movie_social" style="position:absolute;right:0; height: 35px; bottom:0;">
                     <ul>
                         <li><a asp-action="Details" asp-route-id="@item.Id" class="material-icons">add</a></li>
                         <li><a asp-action="Edit" asp-route-id="@item.Id" class="material-icons">edit</a></li>

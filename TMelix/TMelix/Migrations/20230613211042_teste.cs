@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TMelix.Migrations
 {
-    public partial class MigJunta : Migration
+    public partial class teste : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -295,15 +295,10 @@ namespace TMelix.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "a", "dc72421f-0c01-4884-a603-ed635a9a2ab1", "Administrador", "ADMINISTRADOR" },
-                    { "c", "2e2b0405-caa4-4abe-933c-7d0fdf4cc93c", "Cliente", "CLIENTE" },
-                    { "s", "c1716430-aee6-4b7c-b823-f5f54481b988", "Subscritor", "SUBSCRITOR" }
+                    { "a", "7c1a428d-c9b5-4769-8711-2d4b2968bef3", "Administrador", "ADMINISTRADOR" },
+                    { "c", "7edbf8a2-b40f-448e-9fcf-2fe1868f2be3", "Cliente", "CLIENTE" },
+                    { "s", "91c1570f-f3ac-4b47-82b4-42857661ad59", "Subscritor", "SUBSCRITOR" }
                 });
-
-            migrationBuilder.InsertData(
-                table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "DataRegisto", "Email", "EmailConfirmed", "Funcao", "LockoutEnabled", "LockoutEnd", "Nome", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "1", 0, "7589e516-22d6-454f-ada5-2f8dd75c57e1", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "a@a.a", false, "Administrador", false, null, "Admin", "A@A.A", "A@A.A", "AQAAAAEAACcQAAAAENYmAKf9JHZRdAzHjh8hPAio5XwvpFSJMOSpNoMt34OUeEhXMXWhn7pZowP+Y5JyXw==", null, false, "0ffe7ee0-e255-42d0-aee5-4ac77f0c0e6e", false, "a@a.a" });
 
             migrationBuilder.InsertData(
                 table: "Filmes",
@@ -324,11 +319,6 @@ namespace TMelix.Migrations
                     { 2, 5, new DateTime(2011, 6, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), "Gabriel Macht, Patrick J. Adams", 134, "Drama, Comédia", "https://br.web.img2.acsta.net/pictures/14/03/28/10/18/433386.jpg", "O grande advogado corporativo de Manhattan, Harvey Specter, e sua equipe, Donna Paulsen, Louis Litt e Alex Williams, são lançados em uma disputa pelo poder quando um novo sócio se junta à empresa. Com seus dois melhores associados desaparecidos e Jessica de volta a Chicago, Specter e a equipe tentam se adaptar a uma nova normal sem eles. A equipe enfrenta traições, relacionamentos ardentes e segredos que acabam sendo revelados. Velhas e novas rivalidades vêm à luz entre os membros da equipe.", 9, "Suits" },
                     { 3, 5, new DateTime(2011, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), "Emilia Clarke, Pedro Pascal", 73, "Fantasia, Drama", "https://br.web.img3.acsta.net/pictures/19/03/21/16/15/4239577.jpg", "Sucesso entre os livros mais vendidos, a série de obras \"A Song of Ice and Fire\", de George R.R. Martin, é levada à tela quando HBO decide navegar a fundo pelo gênero e recriar a fantasia medieval épica. Este é o retrato de duas famílias poderosas - reis e rainhas, cavaleiros e renegados, homens honestos e mentirosos - disputando um jogo mortal pelo controle dos Sete Reinos de Westeros para assumir o Trono de Ferro.", 8, "Game of Thrones" }
                 });
-
-            migrationBuilder.InsertData(
-                table: "AspNetUserRoles",
-                columns: new[] { "RoleId", "UserId" },
-                values: new object[] { "a", "1" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

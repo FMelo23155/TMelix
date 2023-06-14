@@ -30,7 +30,7 @@
 						<i class="fa header-icon"></i>
 					</a>
 				</div>
-			</div><!--movie-header-->
+			</div>
 			<div class="mv-content">
 				<div class="mv-content-header">
 					<div class="mvs">
@@ -45,18 +45,18 @@
 						<label>Lançamento</label>
 						<span>@Html.DisplayFor(modelItem => item.DataLancamento)</span>
 
-					</div><!--date,time-->
+					</div>
 					<div class="info-section">
 						<label>Classificação</label>
 						<span>@Html.DisplayFor(modelItem => item.Classificacao)/5</span>
-					</div><!--screen-->
+					</div>
 					<div class="info-section">
-						<label>Elenco</label>
+						<label>Detalhes</label>
 						<span><a asp-action="Details" asp-route-id="@item.Id" class="material-icons">add</a></span>
-					</div><!--row-->
+					</div>
 					<br>
 				</div>
-			</div><!--movie-content-->
+			</div>
 		</div>
 
 
@@ -85,7 +85,7 @@ else
 					<i class="fa header-icon"></i>
 				</a>
 			</div>
-		</div><!--movie-header-->
+		</div>
 		<div class="mv-content">
 			<div class="mv-content-header">
 				<div class="mvs">
@@ -100,15 +100,15 @@ else
 					<label>Lançamento</label>
                         <span>@Html.DisplayFor(modelItem => item.DataLancamento)</span>
 
-				</div><!--date,time-->
+				</div>
 				<div class="info-section">
 					<label>Classificação</label>
                         <span>@Html.DisplayFor(modelItem => item.Classificacao)/5</span>
-				</div><!--screen-->
+				</div>
 					<div class="info-section">
 						<label>Detalhes</label>
 						<span><a asp-action="Details" asp-route-id="@item.Id" class="material-icons">add</a></span>
-					</div><!--row-->
+					</div>
                 <br>
                     <div class="movie_social">
                         <ul>
@@ -118,7 +118,7 @@ else
                         </ul>
                     </div>
 			</div>
-		</div><!--movie-content-->
+		</div>
 	</div>
             }
 	

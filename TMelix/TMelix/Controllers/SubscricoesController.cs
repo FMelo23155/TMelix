@@ -35,6 +35,10 @@ namespace TMelix.Controllers
         // GET: Subscricoes
         public async Task<IActionResult> Index()
         {
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return Forbid();
+            }
             PopulateFilmesSeries();
             if (User.IsInRole("Subscritor"))
             {
@@ -78,6 +82,10 @@ namespace TMelix.Controllers
         // GET: Subscricoes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return Forbid();
+            }
             if (id == null || _context.Subscricoes == null)
             {
                 return NotFound();
@@ -112,6 +120,10 @@ namespace TMelix.Controllers
         // GET: Subscricoes/Create
         public IActionResult Create()
         {
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return Forbid();
+            }
             ViewData["UtilizadorFK"] = new SelectList(_context.Utilizadores, "Id", "Nome");
 
 
@@ -265,6 +277,10 @@ namespace TMelix.Controllers
         // GET: Subscricoes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return Forbid();
+            }
             if (id == null || _context.Subscricoes == null)
             {
                 return NotFound();
@@ -280,7 +296,7 @@ namespace TMelix.Controllers
 
             var userData = await _userManager.GetUserAsync(User);
             var utilizador = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Nome == userData.Nome);
-
+           
             if (!User.IsInRole("Administrador"))
             {
                 if (subscricao.UtilizadorFK != utilizador.Id)
@@ -437,6 +453,10 @@ namespace TMelix.Controllers
         // GET: Subscricoes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return Forbid();
+            }
             if (id == null || _context.Subscricoes == null)
             {
                 return NotFound();
@@ -499,18 +519,20 @@ namespace TMelix.Controllers
                 var utilizador = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Id == subscricao.UtilizadorFK);
                 var user = await _userManager.FindByIdAsync(utilizador.UserID.ToString());
                 Console.WriteLine("");
-
                 await _userManager.RemoveFromRoleAsync(user, "Cliente");
                 user.Funcao = "Subscritor";
+                utilizador.UserF = "Subscritor";
                 await _userManager.UpdateAsync(user);
                 await _userManager.AddToRoleAsync(user, "Subscritor");
                 await _userManager.UpdateSecurityStampAsync(user);
             }
             else
             {
+                var utilizador = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Id == subscricao.UtilizadorFK);
                 var userData = await _userManager.GetUserAsync(User);
                 await _userManager.RemoveFromRoleAsync(userData, "Cliente");
                 userData.Funcao = "Subscritor";
+                utilizador.UserF = "Subscritor";
                 await _userManager.UpdateAsync(userData);
                 await _userManager.AddToRoleAsync(userData, "Subscritor");
                 await _signInManager.RefreshSignInAsync(userData);
@@ -525,18 +547,20 @@ namespace TMelix.Controllers
             {
                 var utilizador = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Id == subscricao.UtilizadorFK);
                 var user = await _userManager.FindByIdAsync(utilizador.UserID.ToString());
-
                 await _userManager.RemoveFromRoleAsync(user, "Subscritor");
                 user.Funcao = "Cliente";
+                utilizador.UserF = "Cliente";
                 await _userManager.UpdateAsync(user);
                 await _userManager.AddToRoleAsync(user, "Cliente");
                 await _userManager.UpdateSecurityStampAsync(user);
             }
             else
             {
+                var utilizador = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Id == subscricao.UtilizadorFK);
                 var userData = await _userManager.GetUserAsync(User);
                 await _userManager.RemoveFromRoleAsync(userData, "Subscritor");
                 userData.Funcao = "Cliente";
+                utilizador.UserF = "Cliente";
                 await _userManager.UpdateAsync(userData);
                 await _userManager.AddToRoleAsync(userData, "Cliente");
                 await _signInManager.RefreshSignInAsync(userData);

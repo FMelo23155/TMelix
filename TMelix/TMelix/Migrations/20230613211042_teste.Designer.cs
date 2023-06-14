@@ -12,8 +12,8 @@ using TMelix.Data;
 namespace TMelix.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230613170217_MigJunta")]
-    partial class MigJunta
+    [Migration("20230613211042_teste")]
+    partial class teste
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -69,21 +69,21 @@ namespace TMelix.Migrations
                         new
                         {
                             Id = "a",
-                            ConcurrencyStamp = "dc72421f-0c01-4884-a603-ed635a9a2ab1",
+                            ConcurrencyStamp = "7c1a428d-c9b5-4769-8711-2d4b2968bef3",
                             Name = "Administrador",
                             NormalizedName = "ADMINISTRADOR"
                         },
                         new
                         {
                             Id = "c",
-                            ConcurrencyStamp = "2e2b0405-caa4-4abe-933c-7d0fdf4cc93c",
+                            ConcurrencyStamp = "7edbf8a2-b40f-448e-9fcf-2fe1868f2be3",
                             Name = "Cliente",
                             NormalizedName = "CLIENTE"
                         },
                         new
                         {
                             Id = "s",
-                            ConcurrencyStamp = "c1716430-aee6-4b7c-b823-f5f54481b988",
+                            ConcurrencyStamp = "91c1570f-f3ac-4b47-82b4-42857661ad59",
                             Name = "Subscritor",
                             NormalizedName = "SUBSCRITOR"
                         });
@@ -176,13 +176,6 @@ namespace TMelix.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "1",
-                            RoleId = "a"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -295,27 +288,6 @@ namespace TMelix.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "1",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "7589e516-22d6-454f-ada5-2f8dd75c57e1",
-                            DataRegisto = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "a@a.a",
-                            EmailConfirmed = false,
-                            Funcao = "Administrador",
-                            LockoutEnabled = false,
-                            Nome = "Admin",
-                            NormalizedEmail = "A@A.A",
-                            NormalizedUserName = "A@A.A",
-                            PasswordHash = "AQAAAAEAACcQAAAAENYmAKf9JHZRdAzHjh8hPAio5XwvpFSJMOSpNoMt34OUeEhXMXWhn7pZowP+Y5JyXw==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "0ffe7ee0-e255-42d0-aee5-4ac77f0c0e6e",
-                            TwoFactorEnabled = false,
-                            UserName = "a@a.a"
-                        });
                 });
 
             modelBuilder.Entity("TMelix.Models.Filme", b =>

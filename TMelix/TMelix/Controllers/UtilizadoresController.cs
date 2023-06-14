@@ -27,7 +27,11 @@ namespace TMelix.Controllers
         // GET: Utilizadores
         public async Task<IActionResult> Index()
         {
-              return _context.Utilizadores != null ? 
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return Forbid();
+            }
+            return _context.Utilizadores != null ? 
                           View(await _context.Utilizadores.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.Utilizadores'  is null.");
         }
@@ -35,6 +39,10 @@ namespace TMelix.Controllers
         // GET: Utilizadores/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return Forbid();
+            }
             if (id == null || _context.Utilizadores == null)
             {
                 return NotFound();
@@ -62,6 +70,10 @@ namespace TMelix.Controllers
         // GET: Utilizadores/Create
         public IActionResult Create()
         {
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return Forbid();
+            }
             if (!User.IsInRole("Administrador"))
             {
                 return Forbid();
@@ -88,6 +100,10 @@ namespace TMelix.Controllers
         // GET: Utilizadores/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return Forbid();
+            }
             if (id == null || _context.Utilizadores == null)
             {
                 return NotFound();
@@ -230,6 +246,10 @@ namespace TMelix.Controllers
         // GET: Utilizadores/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return Forbid();
+            }
             if (id == null || _context.Utilizadores == null)
             {
                 return NotFound();
@@ -266,7 +286,13 @@ namespace TMelix.Controllers
             var utilizador = await _context.Utilizadores.FindAsync(id);
             if (utilizador != null)
             {
-                _context.Utilizadores.Remove(utilizador);
+                var aspnetUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == utilizador.Email);
+                if(aspnetUser != null)
+                {
+                    _context.Utilizadores.Remove(utilizador);
+                    _context.Users.Remove(aspnetUser);
+                }
+                
             }
             
             await _context.SaveChangesAsync();
