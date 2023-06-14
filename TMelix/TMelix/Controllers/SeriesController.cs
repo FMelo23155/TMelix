@@ -15,16 +15,22 @@ namespace TMelix.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public SeriesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public SeriesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         // GET: Series
         public async Task<IActionResult> Index()
         {
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return Forbid();
+            }
             if (User.IsInRole("Subscritor"))
             {
                 var user = await _userManager.GetUserAsync(User);
@@ -47,6 +53,7 @@ namespace TMelix.Controllers
             {
                 return Forbid();
             }
+            
 
             return _context.Series != null ?
                         View(await _context.Series.ToListAsync()) :
@@ -56,7 +63,10 @@ namespace TMelix.Controllers
         // GET: Series/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return Forbid();
+            }
             if (User.IsInRole("Cliente"))
             {
                 return Forbid();
@@ -80,6 +90,15 @@ namespace TMelix.Controllers
         // GET: Series/Create
         public IActionResult Create()
         {
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return Forbid();
+            }
+            if (!User.IsInRole("Administrador"))
+            {
+                return Forbid();
+            }
+            
             return View();
         }
 
@@ -102,6 +121,15 @@ namespace TMelix.Controllers
         // GET: Series/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return Forbid();
+            }
+            if (!User.IsInRole("Administrador"))
+            {
+                return Forbid();
+            }
+           
             if (id == null || _context.Series == null)
             {
                 return NotFound();
@@ -127,9 +155,6 @@ namespace TMelix.Controllers
             {
                 return NotFound();
             }
-
-
-
 
             if (ModelState.IsValid)
             {
@@ -157,6 +182,15 @@ namespace TMelix.Controllers
         // GET: Series/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return Forbid();
+            }
+            if (!User.IsInRole("Administrador"))
+            {
+                return Forbid();
+            }
+            
             if (id == null || _context.Series == null)
             {
                 return NotFound();

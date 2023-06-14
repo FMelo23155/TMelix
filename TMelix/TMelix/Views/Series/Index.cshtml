@@ -3,165 +3,120 @@
 @model IEnumerable<TMelix.Models.Serie>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Séries";
 }
 
-<h1>Index</h1>
+<h1>@ViewData["Title"]</h1>
 
 @inject SignInManager<ApplicationUser> _signInManager
 @inject UserManager<ApplicationUser> _userManager
 
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+@if(_signInManager.IsSignedIn(User) && User.IsInRole("Administrador")){
+    <a class="button-34 a1" asp-action="Create">Adicionar nova Série</a>
+}
 
-
+<div class="center-div">
+    <br />
 @if (_signInManager.IsSignedIn(User) && !User.IsInRole("Administrador"))
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Titulo)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Imagem)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Sinopse)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DataLancamento)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Classificacao)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Elenco)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Genero)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Temporada)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Episodio)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Titulo)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Imagem)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Sinopse)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DataLancamento)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Classificacao)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Elenco)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Genero)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Temporada)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Episodio)
-                    </td>
-                    <td>
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    @foreach (var item in Model)
+    {
+        <div class="mv-card">
+            <div class="mv-header" style="background-image: url(@Html.DisplayFor(modelItem => item.Imagem)); background-size: cover;">
+
+                <div class="header-icon-container">
+                    <a class="mvs" href="#">
+                        <i class="fa header-icon"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="mv-content">
+                <div class="mv-content-header">
+                    <div class="mvs">
+                        <h3 class="title">@Html.DisplayFor(modelItem => item.Titulo)</h3>
+                        <h4 style="font-weight:lighter !important; color: black;font-size:20px">@Html.DisplayFor(modelItem => item.Genero)</h4>
+
+                    </div>
+
+                </div>
+                <div class="mv-info">
+                    <div class="info-section">
+                        <label>Lançamento</label>
+                        <span>@Html.DisplayFor(modelItem => item.DataLancamento)</span>
+
+                    </div>
+                    <div class="info-section">
+                        <label>Classificação</label>
+                        <span>@Html.DisplayFor(modelItem => item.Classificacao)/5</span>
+                    </div>
+                    <div class="info-section">
+                        <label>Temporadas</label>
+                        <span>@Html.DisplayFor(modelItem => item.Temporada)</span>
+                    </div>
+                    <div class="info-section">
+                        <label>Detalhes</label>
+                        <span><a asp-action="Details" asp-route-id="@item.Id" class="material-icons">add</a></span>
+                    </div>
+                    </div>
+                </div>
+            </div>
+    }
 }else{
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Titulo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Imagem)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Sinopse)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DataLancamento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Classificacao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Elenco)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Genero)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Temporada)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Episodio)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Titulo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Imagem)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sinopse)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataLancamento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Classificacao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Elenco)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Genero)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Temporada)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Episodio)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+    
+
+    @foreach (var item in Model)
+    {
+            <br />
+        <div class="mv-card">
+            <div class="mv-header" style="background-image: url(@Html.DisplayFor(modelItem => item.Imagem)); background-size: cover;">
+
+                <div class="header-icon-container">
+                    <a class="mvs" href="#">
+                        <i class="fa header-icon"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="mv-content">
+                <div class="mv-content-header">
+                    <div class="mvs">
+                        <h3 class="title">@Html.DisplayFor(modelItem => item.Titulo)</h3>
+                        <h4 style="font-weight:lighter !important; color: black;font-size:20px">@Html.DisplayFor(modelItem => item.Genero)</h4>
+
+                    </div>
+
+                </div>
+                <div class="mv-info">
+                    <div class="info-section">
+                        <label>Lançamento</label>
+                        <span>@Html.DisplayFor(modelItem => item.DataLancamento)</span>
+
+                    </div>
+                    <div class="info-section">
+                        <label>Classificação</label>
+                        <span>@Html.DisplayFor(modelItem => item.Classificacao)/5</span>
+                    </div>
+                    <div class="info-section">
+                        <label>Temporadas</label>
+                        <span>@Html.DisplayFor(modelItem => item.Temporada)</span>
+                    </div>
+                    <div class="info-section">
+                        <label>Detalhes</label>
+                        <span><a asp-action="Details" asp-route-id="@item.Id" class="material-icons">add</a></span>
+                    </div>
+                    <br>
+                    <div class="movie_social">
+                        <ul>
+                            <li><a asp-action="Edit" asp-route-id="@item.Id" class="material-icons">edit</a></li>
+                            <li><a asp-action="Delete" asp-route-id="@item.Id" class="material-icons">delete</a></li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 
 }
-
+</div>

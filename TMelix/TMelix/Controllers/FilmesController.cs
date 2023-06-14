@@ -15,14 +15,15 @@ namespace TMelix.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
 
 
-        public FilmesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public FilmesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
             _userManager = userManager;
-
+            _signInManager = signInManager;
         }
 
         // GET: Filmes
@@ -51,6 +52,12 @@ namespace TMelix.Controllers
                 return Forbid();
             }
 
+
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return Forbid();
+            }
+
             return _context.Filmes != null ?
                           View(await _context.Filmes.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.Filmes'  is null.");
@@ -63,7 +70,10 @@ namespace TMelix.Controllers
             {
                 return Forbid();
             }
-
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return Forbid();
+            }
 
             if (id == null || _context.Filmes == null)
             {
@@ -83,6 +93,14 @@ namespace TMelix.Controllers
         // GET: Filmes/Create
         public IActionResult Create()
         {
+            if (!User.IsInRole("Administrador"))
+            {
+                return Forbid();
+            }
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return Forbid();
+            }
             return View();
         }
 
@@ -105,9 +123,17 @@ namespace TMelix.Controllers
         // GET: Filmes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (!User.IsInRole("Administrador"))
+            {
+                return Forbid();
+            }
             if (id == null || _context.Filmes == null)
             {
                 return NotFound();
+            }
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return Forbid();
             }
 
             var filme = await _context.Filmes.FindAsync(id);
@@ -157,9 +183,17 @@ namespace TMelix.Controllers
         // GET: Filmes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (!User.IsInRole("Administrador"))
+            {
+                return Forbid();
+            }
             if (id == null || _context.Filmes == null)
             {
                 return NotFound();
+            }
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return Forbid();
             }
 
             var filme = await _context.Filmes

@@ -16,12 +16,10 @@
 {
     <header>
         <h1 class="text-danger">Acesso negado</h1>
-        <p class="text-danger">You do not have access to this resource.</p>
+        <p class="text-danger">Não tem acesso para aceder.</p>
     </header>
 }else{
-    <h1>Create</h1>
-
-    <h4>Serie</h4>
+    <h1>Adicionar nova Série</h1>   
     <hr />
     <div class="row">
         <div class="col-md-4">
@@ -72,15 +70,13 @@
                     <input asp-for="Episodio" class="form-control" />
                     <span asp-validation-for="Episodio" class="text-danger"></span>
                 </div>
+                <br>
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <input type="submit" value="Criar" class="btn btn-success" />
+                    <a style="float:right" class="btn btn-secondary" asp-action="Index">Voltar à lista</a>
                 </div>
             </form>
         </div>
-    </div>
-
-    <div>
-        <a asp-action="Index">Back to List</a>
     </div>
 }
 
