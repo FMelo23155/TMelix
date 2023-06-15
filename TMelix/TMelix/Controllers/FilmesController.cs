@@ -47,11 +47,6 @@ namespace TMelix.Controllers
             }
 
 
-            if (User.IsInRole("Cliente"))
-            {
-                return Forbid();
-            }
-
 
             if (!_signInManager.IsSignedIn(User))
             {
@@ -66,10 +61,6 @@ namespace TMelix.Controllers
         // GET: Filmes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (User.IsInRole("Cliente"))
-            {
-                return Forbid();
-            }
             if (!_signInManager.IsSignedIn(User))
             {
                 return Forbid();

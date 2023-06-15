@@ -49,10 +49,6 @@ namespace TMelix.Controllers
                 return View(series);
             }
 
-            if (User.IsInRole("Cliente"))
-            {
-                return Forbid();
-            }
             
 
             return _context.Series != null ?
@@ -67,10 +63,7 @@ namespace TMelix.Controllers
             {
                 return Forbid();
             }
-            if (User.IsInRole("Cliente"))
-            {
-                return Forbid();
-            }
+
 
             if (id == null || _context.Series == null)
             {
