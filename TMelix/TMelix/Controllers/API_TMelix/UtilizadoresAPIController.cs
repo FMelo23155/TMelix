@@ -26,45 +26,15 @@ namespace TMelix.Controllers.API_TMelix
         public async Task<ActionResult<IEnumerable<Utilizador>>> GetUtilizadores()
         {
             return await _context.Utilizadores
-                              .OrderByDescending(a => a.Id)
-                              .Select(a => new Utilizador
-                              {
-                                  Id = a.Id,
-                                  Nome = a.Nome,
-                                  Email = a.Email,
-                                  Sexo = a.Sexo,
-                                  DataNasc = a.DataNasc,
-                                  NIF = a.NIF,
-                                  Morada = a.Morada,
-                                  CodPostal = a.CodPostal,
-                                  Pais = a.Pais,
-                                  UserF = a.UserF,
-                                  Subscricoes = a.Subscricoes,
-                              })
-                              .ToListAsync();
+                .OrderByDescending(a => a.Id)
+                .ToListAsync();
         }
 
         // GET: api/UtilizadoresAPI/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Utilizador>> GetUtilizador(int id)
         {
-            var utilizador = await _context.Utilizadores
-                                    .Select(a => new Utilizador
-                                    {
-                                        Id = a.Id,
-                                        Nome = a.Nome,
-                                        Email = a.Email,
-                                        Sexo = a.Sexo,
-                                        DataNasc = a.DataNasc,
-                                        NIF = a.NIF,
-                                        Morada = a.Morada,
-                                        CodPostal = a.CodPostal,
-                                        Pais = a.Pais,
-                                        UserF = a.UserF,
-                                        Subscricoes = a.Subscricoes,
-                                    })
-                                    .Where(a => a.Id == id)
-                                    .FirstOrDefaultAsync();
+            var utilizador = await _context.Utilizadores.FindAsync(id);
 
             if (utilizador == null)
             {
@@ -110,10 +80,11 @@ namespace TMelix.Controllers.API_TMelix
         [HttpPost]
         public async Task<ActionResult<Utilizador>> PostUtilizador(Utilizador utilizador)
         {
-          if (_context.Utilizadores == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.Utilizadores'  is null.");
-          }
+            if (_context.Utilizadores == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Utilizadores' is null.");
+            }
+
             _context.Utilizadores.Add(utilizador);
             await _context.SaveChangesAsync();
 
@@ -128,6 +99,7 @@ namespace TMelix.Controllers.API_TMelix
             {
                 return NotFound();
             }
+
             var utilizador = await _context.Utilizadores.FindAsync(id);
             if (utilizador == null)
             {

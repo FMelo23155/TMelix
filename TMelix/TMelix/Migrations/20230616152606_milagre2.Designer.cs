@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TMelix.Data;
 
@@ -11,9 +12,10 @@ using TMelix.Data;
 namespace TMelix.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230616152606_milagre2")]
+    partial class milagre2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,21 +69,21 @@ namespace TMelix.Migrations
                         new
                         {
                             Id = "a",
-                            ConcurrencyStamp = "6199e4f4-2551-48df-bc8e-6defa8e34186",
+                            ConcurrencyStamp = "a5828675-2a11-46e1-ad57-7b632f46d66e",
                             Name = "Administrador",
                             NormalizedName = "ADMINISTRADOR"
                         },
                         new
                         {
                             Id = "c",
-                            ConcurrencyStamp = "fe332832-1f84-45ae-9f03-6b81db1fb8d7",
+                            ConcurrencyStamp = "33646dec-8da7-4a3b-a977-884324eebd93",
                             Name = "Cliente",
                             NormalizedName = "CLIENTE"
                         },
                         new
                         {
                             Id = "s",
-                            ConcurrencyStamp = "ff194a8d-3892-427b-8727-e64b673aad0f",
+                            ConcurrencyStamp = "7010fd4d-ad2a-42f4-8f1f-c6b0522c07af",
                             Name = "Subscritor",
                             NormalizedName = "SUBSCRITOR"
                         });
