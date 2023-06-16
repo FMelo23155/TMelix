@@ -33,7 +33,7 @@
         <div>
             <br>
             <h3 style="color:black">@Html.DisplayFor(modelItem => cliente.Nome)</h3>
-            <p><i class="fa-solid fa-user"></i> @funcao</p>
+            <p><i class="fa-solid fa-user"></i> @Html.DisplayFor(modelItem => cliente.UserF)</p>
             <p><i class="fa-solid fa-envelope"></i> @Html.DisplayFor(modelItem => cliente.Email)</p>
                 <p><i class="fa-solid fa-location-dot"></i> @Html.DisplayFor(modelItem => cliente.Morada), @Html.DisplayFor(modelItem => cliente.Pais)</p>
         </div>
@@ -71,7 +71,7 @@
                 <div>
                     <br>
                     <h3 style="color:black">@Html.DisplayFor(modelItem => item.Nome)</h3>
-                    <p><i class="fa-solid fa-user"></i> @funcao</p>
+                    <p><i class="fa-solid fa-user"></i> @Html.DisplayFor(modelItem => item.UserF)</p>
                     <p><i class="fa-solid fa-envelope"></i> @Html.DisplayFor(modelItem => item.Email)</p>
                     <p><i class="fa-solid fa-location-dot"></i> @Html.DisplayFor(modelItem => item.Morada), @Html.DisplayFor(modelItem => item.Pais)</p>
                 </div>

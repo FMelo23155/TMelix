@@ -82,7 +82,6 @@ namespace TMelix.Controllers.API_TMelix
             {
                 return BadRequest();
             }
-            serie.Imagem = "semFoto.png";
 
             _context.Entry(serie).State = EntityState.Modified;
 

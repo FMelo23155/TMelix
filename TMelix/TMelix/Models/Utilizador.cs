@@ -14,6 +14,7 @@ namespace TMelix.Models
             Subscricoes =  new HashSet<Subscricao>();
         }
 
+
         public int Id { get; set; }
 
         [StringLength(30, ErrorMessage = "O {0} não pode ter mais que {1} caractéres.")]
