@@ -12,8 +12,8 @@ using TMelix.Data;
 namespace TMelix.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230616155729_milgare2")]
-    partial class milgare2
+    [Migration("20230617154139_MigFinal")]
+    partial class MigFinal
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -69,21 +69,21 @@ namespace TMelix.Migrations
                         new
                         {
                             Id = "a",
-                            ConcurrencyStamp = "6199e4f4-2551-48df-bc8e-6defa8e34186",
+                            ConcurrencyStamp = "bc1717af-46a0-45d5-afe8-fac66ded9b6f",
                             Name = "Administrador",
                             NormalizedName = "ADMINISTRADOR"
                         },
                         new
                         {
                             Id = "c",
-                            ConcurrencyStamp = "fe332832-1f84-45ae-9f03-6b81db1fb8d7",
+                            ConcurrencyStamp = "5e9b3ae3-6116-4d70-a36d-c431087259fa",
                             Name = "Cliente",
                             NormalizedName = "CLIENTE"
                         },
                         new
                         {
                             Id = "s",
-                            ConcurrencyStamp = "ff194a8d-3892-427b-8727-e64b673aad0f",
+                            ConcurrencyStamp = "c9ad4386-a92f-460e-a9d5-d716269e25e4",
                             Name = "Subscritor",
                             NormalizedName = "SUBSCRITOR"
                         });

@@ -207,11 +207,18 @@ namespace TMelix.Controllers.API_TMelix
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSubscricao(int id)
         {
+            var subscricao = await _context.Subscricoes.FindAsync(id);
+
+            subscricao.Utilizador = await _context.Utilizadores.FindAsync(subscricao.UtilizadorFK);
+
+            var utilizador = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Id == subscricao.UtilizadorFK);
+
+            utilizador.UserF = "Cliente";
+
             if (_context.Subscricoes == null)
             {
                 return NotFound();
             }
-            var subscricao = await _context.Subscricoes.FindAsync(id);
             if (subscricao == null)
             {
                 return NotFound();

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TMelix.Migrations
 {
-    public partial class teste : Migration
+    public partial class MigFinal : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -246,21 +246,21 @@ namespace TMelix.Migrations
                 name: "FilmeSubscricao",
                 columns: table => new
                 {
-                    FilmeId = table.Column<int>(type: "int", nullable: false),
-                    SubscricaoId = table.Column<int>(type: "int", nullable: false)
+                    FilmesId = table.Column<int>(type: "int", nullable: false),
+                    SubscricoesId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FilmeSubscricao", x => new { x.FilmeId, x.SubscricaoId });
+                    table.PrimaryKey("PK_FilmeSubscricao", x => new { x.FilmesId, x.SubscricoesId });
                     table.ForeignKey(
-                        name: "FK_FilmeSubscricao_Filme_FilmeId",
-                        column: x => x.FilmeId,
+                        name: "FK_FilmeSubscricao_Filmes_FilmesId",
+                        column: x => x.FilmesId,
                         principalTable: "Filmes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_FilmeSubscricao_Subscricao_SubscricaoId",
-                        column: x => x.SubscricaoId,
+                        name: "FK_FilmeSubscricao_Subscricoes_SubscricoesId",
+                        column: x => x.SubscricoesId,
                         principalTable: "Subscricoes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -270,21 +270,21 @@ namespace TMelix.Migrations
                 name: "SerieSubscricao",
                 columns: table => new
                 {
-                    SerieId = table.Column<int>(type: "int", nullable: false),
-                    SubscricaoId = table.Column<int>(type: "int", nullable: false)
+                    SeriesId = table.Column<int>(type: "int", nullable: false),
+                    SubscricoesId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SerieSubscricao", x => new { x.SerieId, x.SubscricaoId });
+                    table.PrimaryKey("PK_SerieSubscricao", x => new { x.SeriesId, x.SubscricoesId });
                     table.ForeignKey(
-                        name: "FK_SerieSubscricao_Serie_SerieId",
-                        column: x => x.SerieId,
+                        name: "FK_SerieSubscricao_Series_SeriesId",
+                        column: x => x.SeriesId,
                         principalTable: "Series",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SerieSubscricao_Subscricao_SubscricaoId",
-                        column: x => x.SubscricaoId,
+                        name: "FK_SerieSubscricao_Subscricoes_SubscricoesId",
+                        column: x => x.SubscricoesId,
                         principalTable: "Subscricoes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -295,9 +295,9 @@ namespace TMelix.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "a", "7c1a428d-c9b5-4769-8711-2d4b2968bef3", "Administrador", "ADMINISTRADOR" },
-                    { "c", "7edbf8a2-b40f-448e-9fcf-2fe1868f2be3", "Cliente", "CLIENTE" },
-                    { "s", "91c1570f-f3ac-4b47-82b4-42857661ad59", "Subscritor", "SUBSCRITOR" }
+                    { "a", "bc1717af-46a0-45d5-afe8-fac66ded9b6f", "Administrador", "ADMINISTRADOR" },
+                    { "c", "5e9b3ae3-6116-4d70-a36d-c431087259fa", "Cliente", "CLIENTE" },
+                    { "s", "c9ad4386-a92f-460e-a9d5-d716269e25e4", "Subscritor", "SUBSCRITOR" }
                 });
 
             migrationBuilder.InsertData(
@@ -360,14 +360,14 @@ namespace TMelix.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FilmeSubscricao_SubscricaoId",
+                name: "IX_FilmeSubscricao_SubscricoesId",
                 table: "FilmeSubscricao",
-                column: "SubscricaoId");
+                column: "SubscricoesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SerieSubscricao_SubscricaoId",
+                name: "IX_SerieSubscricao_SubscricoesId",
                 table: "SerieSubscricao",
-                column: "SubscricaoId");
+                column: "SubscricoesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Subscricoes_UtilizadorFK",
